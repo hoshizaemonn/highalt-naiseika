@@ -1,0 +1,168 @@
+<title>ハイアルチ｜日常編集は坪井さん達が自分で（実物デモ）</title>
+<style>
+  :root{
+    --bg:#FBFAF7;--panel:#FFFFFF;--ink:#1B2420;--ink-soft:#4A554E;--line:#E2DED4;
+    --accent:#0E7C6B;--accent-bright:#159A83;--accent-wash:#E6F1ED;--gate:#B57611;--gate-wash:#F7EDD8;
+    --danger:#B0432E;--danger-wash:#F6E4DE;--shadow:0 1px 2px rgba(27,36,32,.05),0 10px 30px rgba(27,36,32,.08);--radius:16px;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#121614;--panel:#1A201D;--ink:#ECEFEA;--ink-soft:#A3AEA7;--line:#2C3531;
+    --accent:#3BC0A6;--accent-bright:#57D6BD;--accent-wash:#16302B;--gate:#E0A94A;--gate-wash:#332715;
+    --danger:#E5806B;--danger-wash:#331F1A;--shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#FFFFFF;--ink:#1B2420;--ink-soft:#4A554E;--line:#E2DED4;--accent:#0E7C6B;--accent-bright:#159A83;--accent-wash:#E6F1ED;--gate:#B57611;--gate-wash:#F7EDD8;--danger:#B0432E;--danger-wash:#F6E4DE;}
+  :root[data-theme="dark"]{--bg:#121614;--panel:#1A201D;--ink:#ECEFEA;--ink-soft:#A3AEA7;--line:#2C3531;--accent:#3BC0A6;--accent-bright:#57D6BD;--accent-wash:#16302B;--gate:#E0A94A;--gate-wash:#332715;--danger:#E5806B;--danger-wash:#331F1A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:44px 20px 72px}
+  .eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 10px}
+  h1{font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.24;margin:0 0 10px;text-wrap:balance;letter-spacing:-.01em}
+  .lede{color:var(--ink-soft);margin:0;font-size:1.02rem;max-width:62ch}
+  .step{margin-top:44px}
+  .step-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .step-head .n{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--accent);color:#fff;font-weight:800;display:grid;place-items:center}
+  .step-head h2{margin:0;font-size:1.28rem}
+  .step-desc{color:var(--ink-soft);margin:4px 0 16px;font-size:.96rem}
+  .stage{background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(128,128,128,.045) 10px,rgba(128,128,128,.045) 20px);
+    border:1px dashed var(--line);border-radius:var(--radius);padding:16px}
+  .stage-label{font-size:.72rem;color:var(--ink-soft);letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px;font-weight:700}
+  .caption{margin-top:12px;background:var(--accent-wash);border:1px solid var(--accent);border-radius:12px;padding:12px 15px;font-size:.9rem}
+  .caption b{color:var(--ink)}
+
+  /* editor mock */
+  .em{max-width:540px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .em-bar{background:var(--accent-wash);padding:8px 12px;font-size:.74rem;color:var(--ink-soft);border-bottom:1px solid var(--line)}
+  .em-body{padding:16px}
+  .em-title{font-size:1.15rem;font-weight:700;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--bg)}
+  .em-tb{display:flex;gap:6px;margin:12px 0 8px}
+  .em-tb span{width:26px;height:24px;border:1px solid var(--line);border-radius:6px;display:grid;place-items:center;font-size:.8rem;color:var(--ink-soft);background:var(--bg)}
+  .em-text{border:1px solid var(--line);border-radius:8px;padding:12px;min-height:70px;background:var(--bg);font-size:.92rem;color:var(--ink)}
+  .em-foot{display:flex;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--line)}
+  .em-pub{background:var(--accent);color:#fff;font-weight:700;border-radius:99px;padding:9px 22px;font-size:.9rem}
+  .cursor{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:-2px;animation:bl 1s steps(1) infinite;margin-left:1px}
+  @keyframes bl{50%{opacity:0}}
+
+  /* text edit mock */
+  .card-mock{max-width:540px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+  .editable{border:1.5px dashed var(--accent);border-radius:8px;padding:6px 8px;background:var(--accent-wash);position:relative}
+  .editable .hint{position:absolute;top:-10px;left:8px;background:var(--accent);color:#fff;font-size:.64rem;font-weight:700;border-radius:99px;padding:2px 8px}
+
+  /* image swap mock */
+  .img-mock{max-width:540px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:var(--shadow);text-align:center}
+  .img-ph{height:150px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));display:grid;place-items:center;color:#fff;font-size:.86rem;margin-bottom:12px}
+  .img-btns{display:flex;gap:8px;justify-content:center}
+  .img-btn{font-size:.84rem;border-radius:99px;padding:9px 18px;font-weight:700}
+  .img-btn.a{background:var(--accent);color:#fff}
+  .img-btn.b{background:var(--bg);border:1px solid var(--line);color:var(--ink)}
+
+  /* OK/NG map */
+  .oknmap{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:600px){.oknmap{grid-template-columns:1fr}}
+  .okbox{border-radius:12px;padding:14px 16px;border:1px solid}
+  .okbox.ok{background:var(--accent-wash);border-color:var(--accent)}
+  .okbox.ng{background:var(--danger-wash);border-color:var(--danger)}
+  .okbox .h{font-weight:800;margin-bottom:8px}
+  .okbox.ok .h{color:var(--accent)} .okbox.ng .h{color:var(--danger)}
+  .okbox ul{margin:0;padding-left:1.15em} .okbox li{font-size:.9rem;margin:3px 0}
+
+  /* 3-step */
+  .flow{display:flex;align-items:stretch;flex-wrap:wrap;margin-top:16px}
+  .fn{flex:1 1 140px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;box-shadow:var(--shadow);border-top:3px solid var(--accent)}
+  .fn .ft{font-weight:700;font-size:.94rem}
+  .fn .fd{font-size:.82rem;color:var(--ink-soft)}
+  .farr{display:flex;align-items:center;justify-content:center;flex:0 0 34px;color:var(--accent);font-weight:800;font-size:1.3rem}
+  @media(max-width:640px){.farr{flex-basis:100%;height:24px;transform:rotate(90deg)}}
+
+  .safe{margin-top:40px;background:var(--gate-wash);border:1px solid var(--gate);border-radius:12px;padding:14px 16px;font-size:.92rem}
+  .safe b{color:var(--ink)}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.84rem}
+  footer b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">High Altitude Management 御中 ｜ Layer 1 実物デモ</p>
+  <h1>日常編集は、坪井さん達が自分で・その場で</h1>
+  <p class="lede">文字・写真・お知らせの更新は、<strong>管理画面でそのまま書き換えるだけ</strong>。数日待って外注していたことが、気づいたその日に直せます。実際の画面イメージでご説明します。</p>
+
+  <!-- 1 -->
+  <div class="step">
+    <div class="step-head"><span class="n">1</span><h2>お知らせ・ニュースを追加する</h2></div>
+    <p class="step-desc">タイトルと本文を書いて「公開」を押すだけ。ブログやお知らせがその場で増やせます。</p>
+    <div class="stage">
+      <p class="stage-label">▼ 管理画面「新規追加」イメージ</p>
+      <div class="em">
+        <div class="em-bar">お知らせ ＞ 新規追加</div>
+        <div class="em-body">
+          <div class="em-title">夏の体験キャンペーンを始めました<span class="cursor"></span></div>
+          <div class="em-tb"><span>B</span><span>I</span><span>🔗</span><span>🖼</span></div>
+          <div class="em-text">この夏、体験トレーニングを特別価格でご案内します。ぜひこの機会に…</div>
+        </div>
+        <div class="em-foot"><span class="em-pub">公開する</span></div>
+      </div>
+    </div>
+    <div class="caption"><b>坪井さん達がやること：</b>タイトルと本文を書く → 「公開する」。以上。AIに「告知文を考えて」と頼めば下書きも作れます。</div>
+  </div>
+
+  <!-- 2 -->
+  <div class="step">
+    <div class="step-head"><span class="n">2</span><h2>文字を直す（料金・電話・キャンペーン文言）</h2></div>
+    <p class="step-desc">直したい文字をクリックして書き換えるだけ。料金改定も営業時間の変更も、その場で反映。</p>
+    <div class="stage">
+      <p class="stage-label">▼ ページ上の文字を書き換えるイメージ</p>
+      <div class="card-mock">
+        <p style="margin:0 0 10px;font-weight:700;font-size:1.1rem">体験トレーニング</p>
+        <p style="margin:0 0 6px;color:var(--ink-soft);font-size:.9rem">通常価格</p>
+        <div class="editable"><span class="hint">クリックで書き換え</span>￥5,500 → <b>￥3,300（今だけ）</b><span class="cursor"></span></div>
+      </div>
+    </div>
+    <div class="caption"><b>坪井さん達がやること：</b>文字をクリック → 打ち直す。数字も文章も自由に。難しい操作はありません。</div>
+  </div>
+
+  <!-- 3 -->
+  <div class="step">
+    <div class="step-head"><span class="n">3</span><h2>写真を差し替える</h2></div>
+    <p class="step-desc">「画像を差し替え」からメディアライブラリを開いて選ぶだけ。新しいスタジオ写真もすぐ反映。</p>
+    <div class="stage">
+      <p class="stage-label">▼ 写真の差し替えイメージ</p>
+      <div class="img-mock">
+        <div class="img-ph">現在の写真</div>
+        <div class="img-btns"><span class="img-btn a">🖼 画像を差し替え</span><span class="img-btn b">元に戻す</span></div>
+      </div>
+    </div>
+    <div class="caption"><b>坪井さん達がやること：</b>「画像を差し替え」→ 使いたい写真を選ぶ。サイズ調整も自動。</div>
+  </div>
+
+  <!-- OK/NG -->
+  <div class="step">
+    <div class="step-head"><span class="n">★</span><h2>触ってOK ／ 触らない の線引き</h2></div>
+    <div class="oknmap">
+      <div class="okbox ok">
+        <div class="h">✓ 自分で触ってOK</div>
+        <ul><li>文字・料金・電話・営業時間</li><li>写真の差し替え</li><li>お知らせ／ニュース／採用の追加</li><li>ページの複製</li></ul>
+      </div>
+      <div class="okbox ng">
+        <div class="h">✕ 触らない（うちに任せる）</div>
+        <ul><li>「プラグイン」「外観＞テーマ編集」</li><li>「設定」画面・WordPress本体の更新</li><li>デザインの構造・レイアウト変更</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- flow -->
+  <div class="step">
+    <div class="step-head"><span class="n">→</span><h2>流れはたった3ステップ</h2></div>
+    <div class="flow">
+      <div class="fn"><div class="ft">1. 書く／選ぶ</div><div class="fd">文字を打つ・写真を選ぶ。</div></div>
+      <div class="farr">→</div>
+      <div class="fn"><div class="ft">2. プレビュー</div><div class="fd">公開前に見た目を確認。</div></div>
+      <div class="farr">→</div>
+      <div class="fn"><div class="ft">3. 公開</div><div class="fd">その場で反映。当日更新。</div></div>
+    </div>
+  </div>
+
+  <div class="safe"><b>安心して始めるために：</b>まず自動バックアップをON（今はOFF）＋練習用サイトで数回慣れてから本番へ。「戻せる」状態を作ってからスタートします。</div>
+
+  <footer>
+    <b>気づいたその場で直せる。</b>数日待ちの外注から、当日更新へ。<br>
+    <span style="opacity:.7">社内たたき ／ 2026-07-24 ・ 斗 hishaku ・ Layer1 実物デモ</span>
+  </footer>
+</div>

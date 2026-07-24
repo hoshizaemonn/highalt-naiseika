@@ -1,0 +1,176 @@
+<title>ハイアルチ｜丸ごと作り替えも初心者主導（実物デモ）</title>
+<style>
+  :root{
+    --bg:#FBFAF7;--panel:#FFFFFF;--ink:#1B2420;--ink-soft:#4A554E;--line:#E2DED4;
+    --accent:#0E7C6B;--accent-bright:#159A83;--accent-wash:#E6F1ED;--gate:#B57611;--gate-wash:#F7EDD8;
+    --danger:#B0432E;--danger-wash:#F6E4DE;--shadow:0 1px 2px rgba(27,36,32,.05),0 10px 30px rgba(27,36,32,.08);--radius:16px;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#121614;--panel:#1A201D;--ink:#ECEFEA;--ink-soft:#A3AEA7;--line:#2C3531;
+    --accent:#3BC0A6;--accent-bright:#57D6BD;--accent-wash:#16302B;--gate:#E0A94A;--gate-wash:#332715;
+    --danger:#E5806B;--danger-wash:#331F1A;--shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#FFFFFF;--ink:#1B2420;--ink-soft:#4A554E;--line:#E2DED4;--accent:#0E7C6B;--accent-bright:#159A83;--accent-wash:#E6F1ED;--gate:#B57611;--gate-wash:#F7EDD8;--danger:#B0432E;--danger-wash:#F6E4DE;}
+  :root[data-theme="dark"]{--bg:#121614;--panel:#1A201D;--ink:#ECEFEA;--ink-soft:#A3AEA7;--line:#2C3531;--accent:#3BC0A6;--accent-bright:#57D6BD;--accent-wash:#16302B;--gate:#E0A94A;--gate-wash:#332715;--danger:#E5806B;--danger-wash:#331F1A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:44px 20px 72px}
+  .eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gate);font-weight:700;margin:0 0 10px}
+  h1{font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.24;margin:0 0 10px;text-wrap:balance;letter-spacing:-.01em}
+  .lede{color:var(--ink-soft);margin:0;font-size:1.02rem;max-width:62ch}
+
+  .step{margin-top:44px}
+  .step-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .step-head .n{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--gate);color:#fff;font-weight:800;display:grid;place-items:center}
+  .step-head h2{margin:0;font-size:1.28rem}
+  .step-desc{color:var(--ink-soft);margin:4px 0 16px;font-size:.96rem}
+
+  .stage{background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(128,128,128,.045) 10px,rgba(128,128,128,.045) 20px);
+    border:1px dashed var(--line);border-radius:var(--radius);padding:16px}
+  .stage-label{font-size:.72rem;color:var(--ink-soft);letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px;font-weight:700}
+
+  /* template chooser */
+  .templates{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media(max-width:680px){.templates{grid-template-columns:repeat(2,1fr)}}
+  .tpl{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:8px;cursor:default;transition:.15s;position:relative}
+  .tpl.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+  .tpl.sel::after{content:"選択中";position:absolute;top:6px;right:6px;background:var(--accent);color:#fff;font-size:.62rem;font-weight:700;border-radius:99px;padding:2px 8px}
+  .mini{border:1px solid var(--line);border-radius:7px;overflow:hidden}
+  .mini-bar{height:14px;background:var(--line);display:flex;align-items:center;gap:3px;padding:0 5px}
+  .mini-bar i{width:4px;height:4px;border-radius:50%;background:rgba(0,0,0,.25);display:block}
+  .mini-hero{height:38px;display:grid;place-items:center;color:#fff;font-size:.56rem;font-weight:700}
+  .mini-b{padding:6px;display:flex;flex-direction:column;gap:4px}
+  .mini-l{height:5px;border-radius:3px;background:rgba(128,128,128,.28)}
+  .mini-row{display:flex;gap:4px;margin-top:2px}
+  .mini-row div{flex:1;height:16px;border-radius:3px;background:rgba(128,128,128,.18)}
+  .tpl .nm{text-align:center;font-size:.78rem;font-weight:700;margin-top:6px}
+  .t-std .mini-hero{background:linear-gradient(135deg,#0e7c6b,#159a83)}
+  .t-sport .mini-hero{background:linear-gradient(135deg,#123a5e,#f0a020)}
+  .t-min .mini-hero{background:#eef1ef;color:#555}
+  .t-lux .mini-hero{background:linear-gradient(135deg,#1c1c1c,#b8912f)}
+
+  .caption{margin-top:12px;background:var(--accent-wash);border:1px solid var(--accent);border-radius:12px;padding:12px 15px;font-size:.9rem}
+  .caption b{color:var(--ink)}
+
+  /* intake form mock */
+  .formmock{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);max-width:520px;margin:0 auto}
+  .fm-lab{font-size:.8rem;color:var(--ink-soft);margin:10px 0 4px;font-weight:700}
+  .fm-in{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:.9rem;color:var(--ink)}
+  .fm-in.url{color:var(--accent)}
+  .fm-ta{min-height:56px}
+  .fm-btn{margin-top:14px;background:var(--gate);color:#fff;font-weight:700;text-align:center;border-radius:99px;padding:12px;font-size:.98rem}
+  .arrowdown{text-align:center;color:var(--gate);font-size:1.6rem;margin:10px 0}
+  .resultcard{background:var(--panel);border:1px solid var(--accent);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);max-width:520px;margin:0 auto}
+  .rc-ok{color:var(--accent);font-weight:700;margin:0 0 6px}
+  .rc-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .rc-btn{font-size:.84rem;border-radius:99px;padding:8px 16px;font-weight:700}
+  .rc-btn.prev{background:var(--accent);color:#fff}
+  .rc-btn.fix{background:var(--bg);border:1px solid var(--line);color:var(--ink)}
+
+  /* section-wise */
+  .pagemock{max-width:420px;margin:0 auto;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
+  .pm-sec{padding:14px 16px;border-bottom:1px solid var(--line);font-size:.82rem;color:var(--ink-soft)}
+  .pm-sec.hot{background:var(--gate-wash);border:2px dashed var(--gate);color:var(--ink);font-weight:700;position:relative;border-radius:8px;margin:6px}
+  .pm-sec.hot::after{content:"← ここだけ作り替え";color:var(--gate);font-size:.72rem;font-weight:700;margin-left:8px}
+
+  /* flow */
+  .flow{display:flex;align-items:stretch;flex-wrap:wrap;margin-top:16px}
+  .fn{flex:1 1 150px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;box-shadow:var(--shadow)}
+  .fn .fw{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+  .fn .ft{font-weight:700;font-size:.92rem;margin:3px 0 2px}
+  .fn .fd{font-size:.8rem;color:var(--ink-soft)}
+  .fn.who1{border-top:3px solid var(--accent)} .fn.whoai{border-top:3px solid var(--accent-bright)} .fn.whogate{border-top:3px solid var(--danger)}
+  .farr{display:flex;align-items:center;justify-content:center;flex:0 0 34px;color:var(--gate);font-weight:800;font-size:1.3rem}
+  @media(max-width:640px){.farr{flex-basis:100%;height:24px;transform:rotate(90deg)}}
+
+  .safe{margin-top:40px;background:var(--danger-wash);border:1px solid var(--danger);border-radius:12px;padding:14px 16px;font-size:.92rem}
+  .safe b{color:var(--danger)}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.84rem}
+  footer b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">High Altitude Management 御中 ｜ Layer 3 実物デモ</p>
+  <h1>「丸ごと作り替え」も、坪井さん達が主導できる</h1>
+  <p class="lede">一からデザインする必要はありません。<strong>選ぶ・参考を出す・プレビューで判断・OKを出す</strong>まで坪井さん達が主導。仕上げと本番反映の安全確認だけ、うちが担当します。実際の画面イメージでご説明します。</p>
+
+  <!-- 仕組み1 -->
+  <div class="step">
+    <div class="step-head"><span class="n">1</span><h2>デザインを選ぶ（着せ替え）</h2></div>
+    <p class="step-desc">プロが用意した数種類のデザインから、<b>クリックで選ぶだけ</b>で全体の見た目が変わります。色や画像は各パネルで調整。ブランドは崩れません。</p>
+    <div class="stage">
+      <p class="stage-label">▼ 管理画面「デザインを選ぶ」イメージ</p>
+      <div class="templates">
+        <div class="tpl t-std sel"><div class="mini"><div class="mini-bar"><i></i><i></i><i></i></div><div class="mini-hero">HIGH-ALTI</div><div class="mini-b"><div class="mini-l" style="width:80%"></div><div class="mini-l" style="width:60%"></div><div class="mini-row"><div></div><div></div><div></div></div></div></div><div class="nm">スタンダード</div></div>
+        <div class="tpl t-sport"><div class="mini"><div class="mini-bar"><i></i><i></i><i></i></div><div class="mini-hero">SPORTY</div><div class="mini-b"><div class="mini-l" style="width:70%"></div><div class="mini-l" style="width:55%"></div><div class="mini-row"><div></div><div></div><div></div></div></div></div><div class="nm">スポーティ</div></div>
+        <div class="tpl t-min"><div class="mini"><div class="mini-bar"><i></i><i></i><i></i></div><div class="mini-hero">MINIMAL</div><div class="mini-b"><div class="mini-l" style="width:85%"></div><div class="mini-l" style="width:50%"></div><div class="mini-row"><div></div><div></div><div></div></div></div></div><div class="nm">ミニマル</div></div>
+        <div class="tpl t-lux"><div class="mini"><div class="mini-bar"><i></i><i></i><i></i></div><div class="mini-hero">PREMIUM</div><div class="mini-b"><div class="mini-l" style="width:75%"></div><div class="mini-l" style="width:60%"></div><div class="mini-row"><div></div><div></div><div></div></div></div></div><div class="nm">高級感</div></div>
+      </div>
+    </div>
+    <div class="caption"><b>坪井さん達がやること：</b>好きなデザインをクリック → 保存。以上。細かい色・画像は各パネルで調整できます。</div>
+  </div>
+
+  <!-- 仕組み2 -->
+  <div class="step">
+    <div class="step-head"><span class="n">2</span><h2>参考サイトから作る</h2></div>
+    <p class="step-desc">「このサイトみたいにしたい」を<b>フォームに入れるだけ</b>。AIが練習環境（壊してOKのコピー）にたたき台を自動生成します。</p>
+    <div class="stage">
+      <p class="stage-label">▼ 「参考サイトから作る」フォーム イメージ</p>
+      <div class="formmock">
+        <div class="fm-lab">参考にしたいサイトのURL</div>
+        <div class="fm-in url">https://example-gym.jp/</div>
+        <div class="fm-lab">こんな感じにしたい（一言でOK）</div>
+        <div class="fm-in fm-ta">トップをもっと明るく、体験予約のボタンを目立たせたい。写真を大きく。</div>
+        <div class="fm-btn">▶ たたき台を作る（練習環境に）</div>
+      </div>
+      <div class="arrowdown">↓ 数分後</div>
+      <div class="resultcard">
+        <p class="rc-ok">✓ 練習環境にたたき台ができました</p>
+        <p style="margin:0;color:var(--ink-soft);font-size:.9rem">本番はそのまま。まずは練習用のコピーで確認できます。</p>
+        <div class="rc-actions">
+          <span class="rc-btn prev">プレビューを見る</span>
+          <span class="rc-btn fix">ここを直して…</span>
+        </div>
+      </div>
+    </div>
+    <div class="caption"><b>坪井さん達がやること：</b>参考URLと希望を入れる → できたものをプレビューで見る →「ここ直して」と一言。気に入るまで何度でも。</div>
+  </div>
+
+  <!-- 仕組み3 -->
+  <div class="step">
+    <div class="step-head"><span class="n">3</span><h2>1セクションずつ作り替え</h2></div>
+    <p class="step-desc">全部を一気にでなく、「トップの1枚目だけ」など<b>1か所ずつ</b>作り替え。小さく試して安全に進められます。</p>
+    <div class="stage">
+      <p class="stage-label">▼ ページのこの部分だけ、を選んで作り替え</p>
+      <div class="pagemock">
+        <div class="pm-sec">ヘッダー</div>
+        <div class="pm-sec hot">ファーストビュー（トップの1枚目）</div>
+        <div class="pm-sec">サービス紹介</div>
+        <div class="pm-sec">お客様の声</div>
+        <div class="pm-sec">キャンペーン</div>
+      </div>
+    </div>
+    <div class="caption"><b>坪井さん達がやること：</b>作り替えたいセクションを選ぶ → 参考や希望を出す → プレビュー確認。他の部分はそのまま。</div>
+  </div>
+
+  <!-- flow -->
+  <div class="step">
+    <div class="step-head"><span class="n">★</span><h2>全体の流れ（安全に本番へ）</h2></div>
+    <div class="flow">
+      <div class="fn who1"><div class="fw">坪井さん達</div><div class="ft">選ぶ／参考を出す</div><div class="fd">テンプレ選択、またはURL＋希望を入力。</div></div>
+      <div class="farr">→</div>
+      <div class="fn whoai"><div class="fw">AI</div><div class="ft">たたき台を生成</div><div class="fd">練習環境（壊してOK）に自動で作る。</div></div>
+      <div class="farr">→</div>
+      <div class="fn who1"><div class="fw">坪井さん達</div><div class="ft">プレビューで判断</div><div class="fd">スマホでも確認。「ここ直して」と一言。</div></div>
+      <div class="farr">→</div>
+      <div class="fn whogate"><div class="fw">安全ゲート（斗）</div><div class="ft">仕上げ＋本番反映</div><div class="fd">最終チェック＋バックアップして公開。</div></div>
+    </div>
+  </div>
+
+  <div class="safe"><b>だから事故りません：</b>作るのは全部「練習用のコピーサイト」。本番はいつでも元に戻せる状態にしてから、うちが最終確認して反映します。坪井さん達は安心して何度でも試せます。</div>
+
+  <footer>
+    <b>一からデザインするのではなく、「選ぶ・出す・判断する」だけ。</b>だから丸ごと作り替えも初心者が主導できる。<br>
+    <span style="opacity:.7">社内たたき ／ 2026-07-24 ・ 斗 hishaku ・ Layer3 実物デモ</span>
+  </footer>
+</div>

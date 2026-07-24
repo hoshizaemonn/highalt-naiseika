@@ -1,0 +1,221 @@
+<title>ハイアルチ内製化デモ｜初心者が触れる編集パネル</title>
+<style>
+  :root{
+    --bg:#FBFAF7; --panel:#FFFFFF; --ink:#1B2420; --ink-soft:#4A554E; --line:#E2DED4;
+    --accent:#0E7C6B; --accent-bright:#159A83; --accent-wash:#E6F1ED;
+    --gate:#B57611; --gate-wash:#F7EDD8; --shadow:0 1px 2px rgba(27,36,32,.05),0 10px 30px rgba(27,36,32,.08); --radius:16px;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#121614; --panel:#1A201D; --ink:#ECEFEA; --ink-soft:#A3AEA7; --line:#2C3531;
+    --accent:#3BC0A6; --accent-bright:#57D6BD; --accent-wash:#16302B; --gate:#E0A94A; --gate-wash:#332715;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#FFFFFF;--ink:#1B2420;--ink-soft:#4A554E;--line:#E2DED4;--accent:#0E7C6B;--accent-bright:#159A83;--accent-wash:#E6F1ED;--gate:#B57611;--gate-wash:#F7EDD8;}
+  :root[data-theme="dark"]{--bg:#121614;--panel:#1A201D;--ink:#ECEFEA;--ink-soft:#A3AEA7;--line:#2C3531;--accent:#3BC0A6;--accent-bright:#57D6BD;--accent-wash:#16302B;--gate:#E0A94A;--gate-wash:#332715;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:44px 20px 72px}
+  .eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 10px}
+  h1{font-size:clamp(1.5rem,4vw,2.2rem);line-height:1.24;margin:0 0 10px;text-wrap:balance;letter-spacing:-.01em}
+  .lede{color:var(--ink-soft);margin:0;font-size:1.04rem;max-width:64ch}
+  .demo-sec{margin-top:46px}
+  .demo-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:4px}
+  .demo-head .n{font-size:.8rem;font-weight:800;color:#fff;background:var(--accent);border-radius:8px;padding:3px 9px}
+  .demo-head h2{font-size:1.3rem;margin:0}
+  .where{font-size:.8rem;color:var(--gate);font-weight:700;background:var(--gate-wash);border-radius:99px;padding:3px 11px}
+  .demo-desc{color:var(--ink-soft);margin:6px 0 14px;font-size:.96rem}
+  .stage{background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(128,128,128,.045) 10px,rgba(128,128,128,.045) 20px);
+    border:1px dashed var(--line);border-radius:var(--radius);padding:14px}
+  .stage-label{font-size:.72rem;color:var(--ink-soft);letter-spacing:.08em;text-transform:uppercase;margin:0 0 8px;font-weight:700}
+  .edit-note{margin-top:12px;background:var(--accent-wash);border:1px solid var(--accent);border-radius:12px;padding:12px 15px;font-size:.9rem}
+  .edit-note b{color:var(--ink)}
+  .edit-note .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chip{font-size:.78rem;background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:4px 11px}
+
+  /* ===== コース診断 widget ===== */
+  .shindan{--sc:var(--accent);max-width:520px;margin:0 auto;padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:var(--shadow);color:var(--ink)}
+  .shindan-title{margin:0 0 4px;font-size:1.2rem}
+  .shindan-sub{margin:0 0 8px;color:var(--ink-soft);font-size:.9rem}
+  .shindan-bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:14px 0 10px}
+  .shindan-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-bright));transition:width .3s}
+  .shindan-step{font-size:.76rem;color:var(--ink-soft);letter-spacing:.04em}
+  .shindan-q{font-size:1.08rem;font-weight:700;margin:6px 0 14px}
+  .shindan-choices{display:flex;flex-direction:column;gap:9px}
+  .shindan-choice{appearance:none;text-align:left;cursor:pointer;padding:13px 15px;border-radius:12px;border:1.5px solid var(--line);background:var(--accent-wash);color:var(--ink);font-size:.98rem;transition:.15s;font-family:inherit}
+  .shindan-choice:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .shindan-result{text-align:center}
+  .shindan-badge{display:inline-block;font-size:.72rem;font-weight:700;color:var(--accent);background:var(--accent-wash);border-radius:99px;padding:5px 14px;margin-bottom:10px}
+  .shindan-rname{margin:4px 0 8px;font-size:1.3rem}
+  .shindan-rdesc{color:var(--ink-soft);margin:0 auto 18px;max-width:42ch}
+  .shindan-cta{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;padding:13px 28px;border-radius:99px;font-size:1rem}
+  .shindan-again{display:block;margin:14px auto 0;background:none;border:none;color:var(--ink-soft);font-size:.85rem;cursor:pointer;text-decoration:underline;font-family:inherit}
+
+  /* ===== キャンペーンバナー widget ===== */
+  .cb{--c:var(--accent);display:flex;gap:18px;align-items:center;max-width:640px;margin:0 auto;padding:18px 22px;border-radius:16px;
+    background:color-mix(in srgb,var(--accent) 8%, var(--panel));border:1px solid color-mix(in srgb,var(--accent) 25%,var(--line));box-shadow:var(--shadow)}
+  .cb-img{flex:0 0 32%;max-width:210px}
+  .cb-img div{width:100%;height:120px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-bright));display:grid;place-items:center;color:#fff;font-size:.8rem;opacity:.9}
+  .cb-badge{display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--accent);border-radius:99px;padding:4px 12px;margin-bottom:8px}
+  .cb h3{margin:2px 0 6px;font-size:1.2rem}
+  .cb p{margin:0 0 6px;color:var(--ink-soft);font-size:.94rem}
+  .cb .per{font-size:.84rem;color:var(--gate);font-weight:700;margin-bottom:12px}
+  .cb-cta{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;padding:12px 26px;border-radius:99px}
+  @media(max-width:560px){.cb{flex-direction:column;text-align:center}.cb-img{width:100%;max-width:100%}}
+
+  /* ===== FAQ widget ===== */
+  .faq{max-width:560px;margin:0 auto}
+  .faq-item{border:1px solid var(--line);border-radius:12px;margin:0 0 9px;overflow:hidden;background:var(--panel);transition:.2s}
+  .faq-item.open{border-color:var(--accent)}
+  .faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;background:none;border:none;text-align:left;padding:15px 16px;font-size:1rem;font-weight:700;color:var(--ink);font-family:inherit}
+  .faq-ico{flex:0 0 auto;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .28s ease}
+  .faq-a-in{padding:0 16px 15px;color:var(--ink-soft);line-height:1.8;font-size:.94rem}
+
+  /* admin mock */
+  .adminmock{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);max-width:560px;margin:0 auto}
+  .adminmock .amrow{display:flex;align-items:center;gap:10px;margin:9px 0}
+  .adminmock .amlab{font-size:.8rem;color:var(--ink-soft);min-width:78px}
+  .adminmock .aminput{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.86rem;color:var(--ink)}
+  .adminmock .amcolor{width:34px;height:26px;border-radius:6px;background:var(--accent);border:1px solid var(--line)}
+  .adminmock .ambtn{font-size:.8rem;border:1px solid var(--line);border-radius:7px;padding:6px 12px;background:var(--bg)}
+  .adminmock .amadd{color:var(--accent);font-weight:700;font-size:.85rem}
+
+  footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.85rem}
+  footer b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">High Altitude Management 御中 ｜ 内製化デモ</p>
+  <h1>サイトの一部を、<br>初心者が触れる「編集パネル」に</h1>
+  <p class="lede">コードを触らなくても、AIで作った"かんたんパネル"なら、文言・画像・色・表示を社内で編集できます。high-alti.jp を題材に、実際に動く3つを作りました。<strong>下のデモはこの場で触れます。</strong></p>
+
+  <!-- 1) コース診断 -->
+  <div class="demo-sec">
+    <div class="demo-head"><span class="n">1</span><h2>コース診断</h2><span class="where">集客を強化</span></div>
+    <p class="demo-desc">3問に答えると、あなたに合うコースを提案 →「体験予約」へ誘導。一方的な紹介より、自分で選んだ結果として受け取れるので成約しやすい。</p>
+    <div class="stage">
+      <p class="stage-label">▼ 実際の表示（触れます）</p>
+      <div class="shindan" id="shindan"></div>
+    </div>
+    <div class="edit-note"><b>初心者が編集できること：</b>質問・選択肢・結果の文言・おすすめ画像・ボタンのリンク（体験予約先）・色。
+      <div class="chips"><span class="chip">＋質問を追加</span><span class="chip">🎨 色ボタン</span><span class="chip">🖼 画像を選ぶ</span></div>
+    </div>
+  </div>
+
+  <!-- 2) キャンペーンバナー -->
+  <div class="demo-sec">
+    <div class="demo-head"><span class="n">2</span><h2>キャンペーンバナー</h2><span class="where">更新頻度 No.1</span></div>
+    <p class="demo-desc">季節ごとに変わるキャンペーン枠。今まで毎回外注していた所を、社内で差し替え。<b>終了日を過ぎたら自動で非表示</b>（消し忘れ防止）。</p>
+    <div class="stage">
+      <p class="stage-label">▼ 実際の表示</p>
+      <div class="cb">
+        <div class="cb-img"><div>画像（差し替え可）</div></div>
+        <div>
+          <span class="cb-badge">期間限定</span>
+          <h3>夏の体験キャンペーン実施中</h3>
+          <p>今なら体験トレーニングが特別価格。この機会にハイアルチを体感してください。</p>
+          <p class="per">📅 2026/8/1 〜 8/31</p>
+          <a class="cb-cta" href="#" onclick="return false">今すぐ体験予約</a>
+        </div>
+      </div>
+    </div>
+    <div class="edit-note"><b>初心者が編集できること：</b>ラベル・見出し・内容・期間・画像・ボタン・色・表示ON/OFF・終了日。
+      <div class="chips"><span class="chip">✅ 表示ON/OFF</span><span class="chip">⏰ 終了日で自動非表示</span><span class="chip">🖼 画像を選ぶ</span></div>
+    </div>
+  </div>
+
+  <!-- 3) FAQ -->
+  <div class="demo-sec">
+    <div class="demo-head"><span class="n">3</span><h2>よくある質問（FAQ）</h2><span class="where">随時追加</span></div>
+    <p class="demo-desc">Q&Aをクリックで開閉。質問が増えても、管理画面から自分で追加できる。</p>
+    <div class="stage">
+      <p class="stage-label">▼ 実際の表示（クリックで開閉）</p>
+      <div class="faq" id="faq"></div>
+    </div>
+    <div class="edit-note"><b>初心者が編集できること：</b>質問・回答の追加/修正/削除・色。
+      <div class="chips"><span class="chip">＋質問を追加</span><span class="chip">× 削除</span><span class="chip">🎨 色ボタン</span></div>
+    </div>
+  </div>
+
+  <!-- 編集はこんなに簡単 -->
+  <div class="demo-sec">
+    <div class="demo-head"><span class="n">★</span><h2>編集はこんなに簡単（管理画面イメージ）</h2></div>
+    <p class="demo-desc">JSONもコードも不要。WordPressの管理画面で、フォームに書く・色を選ぶ・画像を選ぶ・＋で足すだけ。</p>
+    <div class="adminmock">
+      <div class="amrow"><span class="amlab">見出し</span><span class="aminput">夏の体験キャンペーン実施中</span></div>
+      <div class="amrow"><span class="amlab">内容</span><span class="aminput">今なら体験トレーニングが特別価格…</span></div>
+      <div class="amrow"><span class="amlab">メインカラー</span><span class="amcolor"></span><span class="amlab" style="min-width:0">← クリックで色を選ぶ</span></div>
+      <div class="amrow"><span class="amlab">画像</span><span class="ambtn">🖼 画像を選ぶ</span><span class="ambtn">消す</span></div>
+      <div class="amrow"><span class="amlab">終了日</span><span class="aminput" style="max-width:160px">2026-08-31</span><span class="amlab" style="min-width:0">過ぎたら自動で非表示</span></div>
+      <div class="amrow"><span class="amadd">＋ 質問を追加</span></div>
+    </div>
+  </div>
+
+  <footer>
+    <b>これが「内製化」の実物です。</b>難しいコードは触らせず、決まった枠だけを安全に編集 ＝ 一番事故らないやり方。<br>
+    同じ考え方で、サイトの他のパーツ（お客様の声・料金・店舗情報 など）も順にパネル化できます。<br>
+    <span style="opacity:.7">社内デモ ／ 2026-07-24 ・ 斗 hishaku</span>
+  </footer>
+</div>
+
+<script>
+/* ===== コース診断 ===== */
+(function(){
+  var cfg = {
+    title:'あなたに合うトレーニングコース診断',
+    subtitle:'かんたんな質問に答えるだけ。あなたにピッタリのコースをご提案します。',
+    results:{
+      r1:{name:'ウォーキング／ランニング',desc:'まずは無理なく、健康づくり・ダイエットから。低酸素環境で歩く・走るだけでも高い効果が期待できます。',cta:'体験を予約する'},
+      r2:{name:'マシントレーニング',desc:'効率よくしっかり体を変えたいあなたに。短時間で狙った部位を鍛えられます。',cta:'体験を予約する'},
+      r3:{name:'グループエクササイズ',desc:'仲間と楽しく、飽きずに続けたいあなたに。みんなで取り組むから継続しやすい。',cta:'体験を予約する'},
+      r4:{name:'アスリートコース',desc:'競技力を本気で上げたいあなたに。高地トレーニングで持久力の土台をつくります。',cta:'体験を予約する'},
+      r5:{name:'パーソナル・トレーニング',desc:'マンツーマンで手厚くサポート。目標に合わせた専用メニューで最短距離を。',cta:'体験を予約する'}
+    },
+    questions:[
+      {q:'Q1. 一番の目的は？',choices:[['健康づくり・ダイエット','r1'],['しっかり筋力をつけたい','r2'],['仲間と楽しく続けたい','r3'],['競技力を上げたい','r4'],['自分専用でみっちり','r5']]},
+      {q:'Q2. 運動の経験は？',choices:[['あまり運動していない','r1'],['人並みにはある','r2'],['みんなで運動が好き','r3'],['部活・競技の経験がある','r4'],['じっくり教えてほしい','r5']]},
+      {q:'Q3. 続け方のイメージは？',choices:[['マイペースに無理なく','r1'],['効率よく結果を出す','r2'],['楽しく飽きずに','r3'],['目標に向けて本格的に','r4'],['手厚くサポートしてほしい','r5']]}
+    ]
+  };
+  var root=document.getElementById('shindan'),idx=0,scores={};
+  Object.keys(cfg.results).forEach(function(k){scores[k]=0;});
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  function q(){
+    var t=cfg.questions.length,qq=cfg.questions[idx],pct=Math.round(idx/t*100),h='';
+    if(idx===0)h+='<h3 class="shindan-title">'+esc(cfg.title)+'</h3><p class="shindan-sub">'+esc(cfg.subtitle)+'</p>';
+    h+='<div class="shindan-bar"><span style="width:'+pct+'%"></span></div><div class="shindan-step">質問 '+(idx+1)+' / '+t+'</div><div class="shindan-q">'+esc(qq.q)+'</div><div class="shindan-choices">';
+    qq.choices.forEach(function(c,i){h+='<button class="shindan-choice" data-i="'+i+'">'+esc(c[0])+'</button>';});
+    h+='</div>';root.innerHTML=h;
+    root.querySelectorAll('.shindan-choice').forEach(function(b){b.onclick=function(){scores[qq.choices[+b.dataset.i][1]]++;idx++;idx<cfg.questions.length?q():res();};});
+  }
+  function res(){
+    var best=null,bv=-1;Object.keys(scores).forEach(function(k){if(scores[k]>bv){bv=scores[k];best=k;}});
+    var r=cfg.results[best];
+    root.innerHTML='<div class="shindan-result"><div class="shindan-badge">あなたにおすすめ</div><h3 class="shindan-rname">'+esc(r.name)+'</h3><p class="shindan-rdesc">'+esc(r.desc)+'</p><a class="shindan-cta" href="#" onclick="return false">'+esc(r.cta)+'</a><button class="shindan-again">もう一度診断する</button></div>';
+    root.querySelector('.shindan-again').onclick=function(){idx=0;Object.keys(scores).forEach(function(k){scores[k]=0;});q();};
+  }
+  q();
+})();
+
+/* ===== FAQ ===== */
+(function(){
+  var items=[
+    {q:'運動が苦手でも大丈夫ですか？',a:'はい。セミパーソナル指導なので、お一人おひとりのペースに合わせて進めます。初めての方も安心してご参加ください。'},
+    {q:'1回のトレーニングはどのくらいの時間ですか？',a:'約30分です。低酸素環境で行うため、短時間でもしっかりとした実感が得られます。'},
+    {q:'体験は予約が必要ですか？',a:'はい。事前のご予約をお願いしております。予約ページよりご希望の日時をお選びください。'}
+  ];
+  var root=document.getElementById('faq');
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  root.innerHTML=items.map(function(it){
+    return '<div class="faq-item"><button class="faq-q" aria-expanded="false"><span>'+esc(it.q)+'</span><span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">'+esc(it.a)+'</div></div></div>';
+  }).join('');
+  root.querySelectorAll('.faq-q').forEach(function(btn){
+    btn.onclick=function(){
+      var item=btn.parentNode,open=item.classList.toggle('open'),a=item.querySelector('.faq-a');
+      btn.setAttribute('aria-expanded',open?'true':'false');
+      a.style.maxHeight=open?(a.querySelector('.faq-a-in').offsetHeight+'px'):'0px';
+      btn.querySelector('.faq-ico').textContent=open?'−':'+';
+    };
+  });
+})();
+</script>

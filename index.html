@@ -1,0 +1,204 @@
+<title>ハイアルチ WordPress内製化×AI 全体像</title>
+<style>
+  :root{
+    --bg:#FBFAF7;--panel:#FFFFFF;--ink:#1B2420;--ink-soft:#4A554E;--line:#E2DED4;
+    --accent:#0E7C6B;--accent-bright:#159A83;--accent-wash:#E6F1ED;--gate:#B57611;--gate-wash:#F7EDD8;
+    --danger:#B0432E;--danger-wash:#F6E4DE;--shadow:0 1px 2px rgba(27,36,32,.05),0 10px 30px rgba(27,36,32,.08);--radius:16px;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#121614;--panel:#1A201D;--ink:#ECEFEA;--ink-soft:#A3AEA7;--line:#2C3531;
+    --accent:#3BC0A6;--accent-bright:#57D6BD;--accent-wash:#16302B;--gate:#E0A94A;--gate-wash:#332715;
+    --danger:#E5806B;--danger-wash:#331F1A;--shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.4);}}
+  :root[data-theme="light"]{--bg:#FBFAF7;--panel:#FFFFFF;--ink:#1B2420;--ink-soft:#4A554E;--line:#E2DED4;--accent:#0E7C6B;--accent-bright:#159A83;--accent-wash:#E6F1ED;--gate:#B57611;--gate-wash:#F7EDD8;--danger:#B0432E;--danger-wash:#F6E4DE;}
+  :root[data-theme="dark"]{--bg:#121614;--panel:#1A201D;--ink:#ECEFEA;--ink-soft:#A3AEA7;--line:#2C3531;--accent:#3BC0A6;--accent-bright:#57D6BD;--accent-wash:#16302B;--gate:#E0A94A;--gate-wash:#332715;--danger:#E5806B;--danger-wash:#331F1A;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:0 auto;padding:44px 20px 72px}
+  .eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 10px}
+  h1{font-size:clamp(1.5rem,4vw,2.15rem);line-height:1.24;margin:0 0 10px;text-wrap:balance;letter-spacing:-.01em}
+  .lede{color:var(--ink-soft);margin:0;font-size:1.02rem;max-width:64ch}
+  .sec-label{display:flex;align-items:center;gap:10px;margin:42px 0 16px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
+  .sec-label::before{content:"";width:22px;height:2px;background:var(--accent);border-radius:2px}
+
+  /* 3 layers */
+  .layers{display:flex;flex-direction:column;gap:14px}
+  .layer{display:grid;grid-template-columns:176px 1fr;overflow:hidden;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow);background:var(--panel)}
+  @media(max-width:640px){.layer{grid-template-columns:1fr}}
+  .lside{padding:18px 20px;color:#fff;display:flex;flex-direction:column;justify-content:center;gap:3px}
+  .l1 .lside{background:linear-gradient(135deg,var(--accent),var(--accent-bright))}
+  .l2 .lside{background:linear-gradient(135deg,var(--accent-bright),#2bb59a)}
+  .l3 .lside{background:linear-gradient(135deg,var(--gate),#caa24a)}
+  .lside .lv{font-size:.72rem;letter-spacing:.1em;font-weight:700;opacity:.92}
+  .lside .lt{font-size:1.18rem;font-weight:800}
+  .lside .who{font-size:.8rem;opacity:.94;margin-top:2px}
+  .lbody{padding:16px 20px}
+  .lbody .what{font-weight:700;margin:0 0 6px;font-size:1.02rem}
+  .lbody ul{margin:0 0 10px;padding-left:1.15em}
+  .lbody li{font-size:.92rem;color:var(--ink-soft);margin:2px 0}
+  .lbody li b{color:var(--ink)}
+  .lbody .tool{display:inline-block;font-size:.78rem;font-weight:600;color:var(--accent);background:var(--accent-wash);border-radius:8px;padding:5px 11px}
+  .l3 .lbody .tool{color:var(--gate);background:var(--gate-wash)}
+  .lbody .toolrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+  .lbody .toolrow .tool{margin-top:0}
+  .demolink{display:inline-flex;align-items:center;gap:5px;font-size:.82rem;font-weight:700;text-decoration:none;
+    color:#fff;background:var(--accent);border-radius:99px;padding:6px 14px;transition:.15s}
+  .l3 .demolink{background:var(--gate)}
+  .demolink:hover{filter:brightness(.92)}
+  .cando{display:inline-block;font-size:.7rem;font-weight:700;border-radius:99px;padding:3px 10px;margin-left:8px}
+  .cando.self{color:#fff;background:var(--accent)} .cando.mix{color:#fff;background:var(--gate)}
+
+  /* layer3 beginner flow */
+  .mechs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  @media(max-width:720px){.mechs{grid-template-columns:1fr}}
+  .mech{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+  .mech .mn{font-size:.72rem;font-weight:700;color:var(--gate);letter-spacing:.05em}
+  .mech h3{margin:6px 0 6px;font-size:1.02rem}
+  .mech p{margin:0;color:var(--ink-soft);font-size:.9rem}
+  .mech .easy{display:inline-block;margin-top:8px;font-size:.7rem;font-weight:700;color:var(--accent);background:var(--accent-wash);border-radius:99px;padding:3px 10px}
+
+  .flow{display:flex;align-items:stretch;flex-wrap:wrap;margin-top:16px}
+  .fn{flex:1 1 150px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;box-shadow:var(--shadow)}
+  .fn .fw{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+  .fn .ft{font-weight:700;font-size:.94rem;margin:3px 0 2px}
+  .fn .fd{font-size:.82rem;color:var(--ink-soft)}
+  .fn.who1{border-top:3px solid var(--accent)} .fn.whoai{border-top:3px solid var(--accent-bright)} .fn.whogate{border-top:3px solid var(--danger)}
+  .farr{display:flex;align-items:center;justify-content:center;flex:0 0 36px;color:var(--accent);font-weight:800;font-size:1.3rem}
+  @media(max-width:640px){.farr{flex-basis:100%;height:26px;transform:rotate(90deg)}}
+
+  /* assets */
+  .assets{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media(max-width:640px){.assets{grid-template-columns:1fr}}
+  .asset{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+  .asset .tag{font-size:.68rem;font-weight:700;letter-spacing:.05em;color:#fff;border-radius:6px;padding:2px 8px}
+  .asset .done{background:var(--accent)} .asset .plan{background:var(--gate)}
+  .asset h3{margin:8px 0 4px;font-size:1.02rem}
+  .asset p{margin:0;color:var(--ink-soft);font-size:.9rem}
+
+  /* responsibility table */
+  .rtbl{width:100%;border-collapse:collapse;font-size:.92rem;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .rtbl th,.rtbl td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  .rtbl th{background:var(--accent-wash);color:var(--ink);font-size:.82rem}
+  .rtbl td:first-child{font-weight:700;white-space:nowrap}
+  .rtbl tr:last-child td{border-bottom:none}
+  .yes{color:var(--accent);font-weight:700}
+  .tblwrap{overflow-x:auto}
+
+  .note{margin-top:16px;background:var(--gate-wash);border:1px solid var(--gate);border-radius:12px;padding:14px 16px;font-size:.92rem}
+  .note b{color:var(--ink)}
+  .msg{margin-top:16px;background:var(--accent-wash);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;font-size:.98rem;line-height:1.8}
+  .msg b{color:var(--ink)}
+  footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.84rem}
+  footer b{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">High Altitude Management 御中 ｜ 全体像（詳細版）</p>
+  <h1>WordPress内製化 × AI ── 3段階で「自分でできる」を広げる</h1>
+  <p class="lede">難しいコードは触らせず、決まった枠だけ安全に編集。日常の更新はもちろん、<strong>丸ごと作り替えまで坪井さん達が主導できる仕組み</strong>にします。仕上げと本番反映の安全確認だけ、うちが担当。<br><span style="color:var(--accent);font-weight:700">各段階の「▶ 実物デモを見る」から、実際の画面イメージをご覧いただけます。</span></p>
+
+  <p class="sec-label">考え方：改修を3段階に分ける</p>
+  <div class="layers">
+    <div class="layer l1">
+      <div class="lside"><span class="lv">LAYER 1</span><span class="lt">日常編集</span><span class="who">坪井さん達が自分で</span></div>
+      <div class="lbody">
+        <p class="what">文字・画像・お知らせ・料金の更新<span class="cando self">初心者だけで◎</span></p>
+        <ul>
+          <li>料金・キャンペーン文言の書き換え、写真の差し替え</li>
+          <li>お知らせ／ニュース／採用／社員インタビューの追加</li>
+          <li>既存ページの複製</li>
+        </ul>
+        <div class="toolrow"><span class="tool">道具：管理画面＋AIは文章の相談役</span><a class="demolink" href="./layer1.html" target="_blank" rel="noopener">▶ 実物デモを見る</a></div>
+      </div>
+    </div>
+    <div class="layer l2">
+      <div class="lside"><span class="lv">LAYER 2</span><span class="lt">部分パネル化</span><span class="who">AIで量産→初心者が編集</span></div>
+      <div class="lbody">
+        <p class="what">「よく変える部分」を編集パネルにする<span class="cando self">編集は初心者◎</span></p>
+        <ul>
+          <li>キャンペーン・FAQ・お客様の声・料金表などを、<b>ノーコードで編集できるプラグイン</b>に</li>
+          <li>色はボタン、画像はメディアから選ぶだけ、項目は＋−で増減</li>
+          <li>新しいパネルは<b>「一言」でAIが自動生成</b></li>
+        </ul>
+        <div class="toolrow"><span class="tool">道具：AIプラグイン工場（/wp-plugin）</span><a class="demolink" href="./layer2.html" target="_blank" rel="noopener">▶ 実物デモを見る（動く）</a></div>
+      </div>
+    </div>
+    <div class="layer l3">
+      <div class="lside"><span class="lv">LAYER 3</span><span class="lt">丸ごと作り替え</span><span class="who">坪井さんが主導＋うちが仕上げ</span></div>
+      <div class="lbody">
+        <p class="what">デザインの全面刷新・新ページ<span class="cando mix">初心者が主導できる</span></p>
+        <ul>
+          <li><b>デザインを選ぶ</b>（用意したテンプレから着せ替え）</li>
+          <li><b>参考サイトを出す</b>と、AIがそっくりのたたき台を生成</li>
+          <li>プレビューで確認して「ここをこうして」と指示 → 反映は安全確認を通す</li>
+        </ul>
+        <div class="toolrow"><span class="tool">道具：着せ替え＋参考ベース生成（/hp-generate）</span><a class="demolink" href="./layer3.html" target="_blank" rel="noopener">▶ 実物デモを見る</a></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec-label">★ Layer 3 も坪井さん達が主導できる仕組み</p>
+  <div class="mechs">
+    <div class="mech">
+      <div class="mn">仕組み①</div>
+      <h3>デザイン着せ替え</h3>
+      <p>プロが用意した数種類のデザインテンプレから<strong>選ぶだけ</strong>で全体の見た目が変わる。色・画像は各パネルで調整。ブランドは崩れない。</p>
+      <span class="easy">一番かんたん</span>
+    </div>
+    <div class="mech">
+      <div class="mn">仕組み②</div>
+      <h3>参考サイトから作る</h3>
+      <p>「このサイトみたいにしたい」の<strong>参考URLと希望をフォームに入れる</strong>と、AIが練習環境にたたき台を自動生成。プレビューで確認できる。</p>
+      <span class="easy">やりたい事を出すだけ</span>
+    </div>
+    <div class="mech">
+      <div class="mn">仕組み③</div>
+      <h3>セクション単位で</h3>
+      <p>全部一気にでなく「トップの1枚目だけ」など<strong>1セクションずつ</strong>作り替え。小さく試して安全に進める。</p>
+      <span class="easy">小さく安全に</span>
+    </div>
+  </div>
+
+  <div class="flow">
+    <div class="fn who1"><div class="fw">坪井さん達</div><div class="ft">参考を出す／選ぶ</div><div class="fd">URL＋希望をフォームに。またはテンプレを選ぶ。</div></div>
+    <div class="farr">→</div>
+    <div class="fn whoai"><div class="fw">AI</div><div class="ft">たたき台を生成</div><div class="fd">練習環境（壊してOK）に自動で作る。</div></div>
+    <div class="farr">→</div>
+    <div class="fn who1"><div class="fw">坪井さん達</div><div class="ft">プレビューで判断</div><div class="fd">スマホでも確認。「ここ直して」と一言。</div></div>
+    <div class="farr">→</div>
+    <div class="fn whogate"><div class="fw">安全ゲート（斗）</div><div class="ft">仕上げ＋本番反映</div><div class="fd">最終チェック＋バックアップして公開。</div></div>
+  </div>
+
+  <p class="sec-label">誰がどこまでできるか</p>
+  <div class="tblwrap">
+  <table class="rtbl">
+    <tr><th>段階</th><th>坪井さん達（初心者）</th><th>AI／斗</th></tr>
+    <tr><td>Layer1 日常編集</td><td class="yes">◎ 自分で完結</td><td>文章づくりのサポート</td></tr>
+    <tr><td>Layer2 パネル化</td><td class="yes">◎ 編集は自分で</td><td>パネルをAIで生成</td></tr>
+    <tr><td>Layer3 作り替え</td><td class="yes">◎ 選ぶ・参考を出す・OK判断</td><td>生成・仕上げ・本番反映の安全確認</td></tr>
+  </table>
+  </div>
+
+  <p class="sec-label">今ある実物・これから</p>
+  <div class="assets">
+    <div class="asset"><span class="tag done">できた</span><h3>御社専用の提案書</h3><p>7/20提案＋「どのページの改修がLv1/2/3か」の一覧。</p></div>
+    <div class="asset"><span class="tag done">できた</span><h3>動くデモ3プラグイン</h3><p>コース診断（→体験予約）・キャンペーンバナー・FAQ。色/画像/文言を管理画面で編集。</p></div>
+    <div class="asset"><span class="tag done">できた</span><h3>AIプラグイン工場</h3><p>「一言」で新しい編集パネルを自動生成。初心者向け注文シートも用意。</p></div>
+    <div class="asset"><span class="tag plan">これから</span><h3>デザイン着せ替え＋参考ベース生成</h3><p>テンプレ選択パネルと「参考サイト注文フォーム」を用意し、Layer3を初心者主導に。まず1セクションのデモから。</p></div>
+  </div>
+
+  <div class="note"><b>始める前の土台（調査で判明）：</b>両サイトとも自動バックアップが今OFF → まず有効化。練習用の複製サイトを用意し、AIの出力は練習環境で確認してから本番へ。だから「壊しても戻せる」。</div>
+
+  <div class="msg">
+    <b>ご相談したいこと</b><br>
+    ① この3段階の方向で進めてよいか（まずLayer1-2から）<br>
+    ② 本格化に向けて、クライアントに2点確認をお願いしたい —<br>
+    　・エックスサーバーの<b>サーバーパネル権限</b>（今はWordPress管理画面のみ受領）<br>
+    　・<b>制作会社とのテーマ所有権</b>の整理（作り替え・改修の範囲）
+  </div>
+
+  <footer>
+    <b>研修（人が学ぶ）× パネル化（仕組みで安全に）× 作り替え（初心者主導＋うちが仕上げ）</b> の3本立て。<br>
+    <span style="opacity:.7">社内たたき ／ 2026-07-24 詳細版 ・ 斗 hishaku ・ 料金は別途</span>
+  </footer>
+</div>
