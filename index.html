@@ -88,14 +88,26 @@
   .note b{color:var(--ink)}
   .msg{margin-top:16px;background:var(--accent-wash);border:1px solid var(--accent);border-radius:12px;padding:16px 18px;font-size:.98rem;line-height:1.8}
   .msg b{color:var(--ink)}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:680px){.plans{grid-template-columns:1fr}}
+  .plan{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .plan.reco{border:1.5px solid var(--accent)}
+  .plan .rb{align-self:flex-start;font-size:.66rem;font-weight:700;color:#fff;background:var(--accent);border-radius:99px;padding:2px 9px;margin-bottom:6px}
+  .plan .pk{font-weight:800;color:var(--accent);font-size:.9rem}
+  .plan .pn{font-weight:700;font-size:.98rem;margin:1px 0 6px}
+  .plan .pp{font-size:1.18rem;font-weight:800;font-variant-numeric:tabular-nums}
+  .plan .pd{font-size:.83rem;color:var(--ink-soft);margin-top:5px}
+  .extra{margin-top:12px;background:var(--gate-wash);border:1px solid var(--gate);border-radius:10px;padding:11px 15px;font-size:.9rem}
+  .extra b{color:var(--ink)}
+  .pricenote{font-size:.82rem;color:var(--ink-soft);margin-top:10px}
   footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:.84rem}
   footer b{color:var(--ink)}
 </style>
 
 <div class="wrap">
-  <p class="eyebrow">High Altitude Management 御中 ｜ 全体像（詳細版）</p>
+  <p class="eyebrow">High Altitude Management 御中 ｜ WordPress内製化 ご提案</p>
   <h1>WordPress内製化 × AI ── 3段階で「自分でできる」を広げる</h1>
-  <p class="lede">難しいコードは触らせず、決まった枠だけ安全に編集。日常の更新はもちろん、<strong>丸ごと作り替えまで坪井さん達が主導できる仕組み</strong>にします。仕上げと本番反映の安全確認だけ、うちが担当。<br><span style="color:var(--accent);font-weight:700">各段階の「▶ 実物デモを見る」から、実際の画面イメージをご覧いただけます。</span></p>
+  <p class="lede">難しいコードは触らせず、決まった枠だけ安全に編集。日常の更新はもちろん、<strong>丸ごと作り替えまで坪井さん達が主導できる仕組み</strong>にします。仕上げと本番反映の安全確認だけ、弊社が担当。<br><span style="color:var(--accent);font-weight:700">各段階の「▶ 実物デモを見る」から、実際の画面イメージをご覧いただけます。</span></p>
 
   <p class="sec-label">考え方：改修を3段階に分ける</p>
   <div class="layers">
@@ -124,7 +136,7 @@
       </div>
     </div>
     <div class="layer l3">
-      <div class="lside"><span class="lv">LAYER 3</span><span class="lt">丸ごと作り替え</span><span class="who">坪井さんが主導＋うちが仕上げ</span></div>
+      <div class="lside"><span class="lv">LAYER 3</span><span class="lt">丸ごと作り替え</span><span class="who">坪井さんが主導＋弊社が仕上げ</span></div>
       <div class="lbody">
         <p class="what">デザインの全面刷新・新ページ<span class="cando mix">初心者が主導できる</span></p>
         <ul>
@@ -189,16 +201,39 @@
 
   <div class="note"><b>始める前の土台（調査で判明）：</b>両サイトとも自動バックアップが今OFF → まず有効化。練習用の複製サイトを用意し、AIの出力は練習環境で確認してから本番へ。だから「壊しても戻せる」。</div>
 
+  <p class="sec-label">料金プラン（目安）</p>
+  <div class="plans">
+    <div class="plan">
+      <span class="pk">プラン A</span><span class="pn">講座のみ（全3回）</span>
+      <span class="pp">¥150,000</span>
+      <span class="pd">各90分・オンライン可・複数名OK・全回録画付。土台づくりは貴社側でご対応いただく前提。</span>
+    </div>
+    <div class="plan reco">
+      <span class="rb">おすすめ</span>
+      <span class="pk">プラン B</span><span class="pn">土台づくり ＋ 講座</span>
+      <span class="pp">¥250,000</span>
+      <span class="pd">自動バックアップ・練習用サイト・権限設定・手順書（STEP0）＋全3回講座。最も事故が少なく定着率が高い構成。</span>
+    </div>
+    <div class="plan">
+      <span class="pk">プラン C</span><span class="pn">B ＋ 3ヶ月伴走</span>
+      <span class="pp">¥250,000＋月額¥40,000×3</span>
+      <span class="pd">実際の改修を伴走しながら、自走できる状態まで。チャットサポート＋月2回の質問会。</span>
+    </div>
+  </div>
+  <div class="extra">
+    <b>月額サポート（任意）：¥40,000／月</b> … 質問対応＋編集パネルの追加＋難しい改修の受け皿。<br>
+    <b>デザインの丸ごと作り替え（Layer3）：別途お見積り</b> … 規模・ページ数に応じてご提案します。
+  </div>
+  <p class="pricenote">※金額はすべて税別・目安です。御社サイトの規模・ページ数を拝見のうえ、最終お見積りをご提示します。</p>
+
   <div class="msg">
-    <b>ご相談したいこと</b><br>
-    ① この3段階の方向で進めてよいか（まずLayer1-2から）<br>
-    ② 本格化に向けて、クライアントに2点確認をお願いしたい —<br>
-    　・エックスサーバーの<b>サーバーパネル権限</b>（今はWordPress管理画面のみ受領）<br>
-    　・<b>制作会社とのテーマ所有権</b>の整理（作り替え・改修の範囲）
+    <b>次のステップ</b><br>
+    まずは御社サイトを拝見し、「どのページのどの改修が Layer1／2／3 か」を一覧にしてご提案します。<br>
+    進めるにあたり、<b>サーバー管理権限のご共有</b>と、<b>現在の制作会社さんとの役割整理</b>だけご相談させてください。
   </div>
 
   <footer>
-    <b>研修（人が学ぶ）× パネル化（仕組みで安全に）× 作り替え（初心者主導＋うちが仕上げ）</b> の3本立て。<br>
-    <span style="opacity:.7">社内たたき ／ 2026-07-24 詳細版 ・ 斗 hishaku ・ 料金は別途</span>
+    <b>研修（学ぶ）× パネル化（仕組みで安全に）× 作り替え（御社主導＋弊社が仕上げ）</b> の3本立てで、無理なく内製化を進めます。<br>
+    <span style="opacity:.7">株式会社斗 hishaku ／ 2026-07-24</span>
   </footer>
 </div>
