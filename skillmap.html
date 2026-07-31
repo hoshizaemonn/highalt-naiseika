@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>High-Alti様 サイト内製化 研修 スキルマップ</title>
+<style>
+  :root{
+    --navy:#0f2740; --blue:#1d5c96; --sky:#3a8fd4; --ice:#eaf3fb;
+    --line:#d6e2ee; --ink:#243244; --sub:#5b6b7d; --gold:#d99b2b;
+    --green:#2e9e6b; --red:#c0492f; --bg:#f4f7fb; --card:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.7; padding:32px 16px;}
+  .wrap{max-width:1040px; margin:0 auto;}
+  .badge{display:inline-block; background:var(--blue); color:#fff; font-size:12px;
+    font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:.05em;}
+  h1{font-size:26px; color:var(--navy); margin:12px 0 4px; letter-spacing:.02em}
+  .lead{color:var(--sub); font-size:14px; margin-bottom:24px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:22px 24px; margin-bottom:22px; box-shadow:0 2px 10px rgba(15,39,64,.04)}
+  .card h2{font-size:18px; color:var(--blue); margin-bottom:14px;
+    padding-left:12px; border-left:5px solid var(--sky);}
+  .goal{background:linear-gradient(135deg,var(--navy),var(--blue)); color:#fff}
+  .goal h2{color:#fff; border-color:var(--gold)}
+  .goal .big{font-size:20px; font-weight:700; margin:8px 0}
+  .goal .money{color:#ffd98a; font-weight:700}
+
+  .road{display:flex; flex-direction:column; gap:0}
+  .step{display:flex; align-items:stretch; gap:16px; position:relative; padding:6px 0}
+  .stepnum{flex:0 0 52px; display:flex; flex-direction:column; align-items:center}
+  .circ{width:44px;height:44px;border-radius:50%;background:var(--sky);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;
+    box-shadow:0 3px 8px rgba(58,143,212,.35)}
+  .rail{flex:1 0 auto;width:3px;background:var(--line);margin-top:2px}
+  .step:last-child .rail{display:none}
+  .stepbody{flex:1; background:var(--ice); border-radius:10px; padding:12px 16px; margin-bottom:8px}
+  .stepbody .t{font-weight:700; color:var(--navy); font-size:15.5px}
+  .stepbody .d{font-size:13.5px; color:var(--sub); margin-top:2px}
+  .meta{display:flex; gap:8px; margin-top:8px; flex-wrap:wrap}
+  .tag{font-size:11.5px; background:#fff; border:1px solid var(--line); color:var(--blue);
+    padding:2px 9px; border-radius:12px}
+  .diff{font-size:11.5px; color:var(--gold); font-weight:700}
+  .core{border:2px solid var(--sky)}
+  .core .t::after{content:"　◀ 内製化の核"; color:var(--sky); font-size:11.5px; font-weight:700}
+
+  table{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:4px}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top}
+  th{background:var(--ice); color:var(--navy); font-weight:700}
+  .split th:first-child{width:16%}
+  .ok{color:var(--green); font-weight:700}
+  .ng{color:var(--red); font-weight:700}
+
+  .flow{display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:13.5px}
+  .fbox{background:var(--ice); border:1px solid var(--line); border-radius:8px; padding:8px 12px; flex:1; min-width:120px; text-align:center}
+  .fbox b{color:var(--navy)}
+  .arrow{color:var(--sky); font-weight:800; font-size:18px}
+
+  .price{background:#eef7f1; border-color:#bfe2cd}
+  .price h2{color:var(--green); border-color:var(--green)}
+  .price p{font-size:15px}
+
+  .foot{font-size:11.5px; color:var(--sub); text-align:center; margin-top:8px}
+  @media(max-width:760px){.split th:first-child{width:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="badge">High-Alti様 ご提示資料</span>
+  <h1>サイト内製化 研修 ─ スキルマップ</h1>
+  <p class="lead">Claudeでサイト更新・LP量産を自社で回せるようになるまでの道筋</p>
+
+  <!-- ゴール -->
+  <div class="card goal">
+    <h2>この研修のゴール</h2>
+    <p class="big">Claude（＋ChatGPT画像）で、サイト更新・LP量産・デザイン調整を<br>外注に頼らず自社で回せる状態に。</p>
+    <p>これまで軽微な修正でも制作会社へ依頼＝<span class="money">1件あたり相応の費用</span>。<br>
+    内製化後は日常更新〜LP量産を社内で完結。<b>難しい改修だけを弊社がバックアップ</b>します。<br>
+    まずは坪井様おひとりが習得（既にHyrox LPを1本完成された実績あり）。社員展開はその後で。</p>
+  </div>
+
+  <!-- スキルマップ -->
+  <div class="card">
+    <h2>スキルマップ ─ 何ができるようになるか（順番）</h2>
+    <div class="road">
+      <div class="step"><div class="stepnum"><div class="circ">1</div><div class="rail"></div></div>
+        <div class="stepbody"><div class="t">安全の土台</div>
+          <div class="d">触る前にバックアップ→壊れても自分で戻せる。「触ってOK／NG」を判断できる</div>
+          <div class="meta"><span class="tag">WP管理画面</span><span class="tag">バックアップ</span><span class="diff">難度 ★☆☆</span></div>
+        </div></div>
+      <div class="step"><div class="stepnum"><div class="circ">2</div><div class="rail"></div></div>
+        <div class="stepbody"><div class="t">日常更新を自走</div>
+          <div class="d">文字・画像・お知らせ・採用・社員インタビューを更新→確認→反映→キャッシュ削除まで1周</div>
+          <div class="meta"><span class="tag">ブロック／ACF枠</span><span class="diff">難度 ★☆☆</span></div>
+        </div></div>
+      <div class="step"><div class="stepnum"><div class="circ">3</div><div class="rail"></div></div>
+        <div class="stepbody core"><div class="t">FTPで本番へ反映</div>
+          <div class="d">管理画面で触れない部分を、FTPソフトで取得→ローカルで直す→本番へ戻す一連を安全に実行</div>
+          <div class="meta"><span class="tag">FTPスキル（ZIP配布）</span><span class="diff">難度 ★★☆</span></div>
+        </div></div>
+      <div class="step"><div class="stepnum"><div class="circ">4</div><div class="rail"></div></div>
+        <div class="stepbody core"><div class="t">Claudeでコード編集</div>
+          <div class="d">練習環境でClaude（コード／コワーク）にデザイン・レイアウトを直させ、プレビュー確認して反映</div>
+          <div class="meta"><span class="tag">Claude Code</span><span class="tag">コワーク</span><span class="diff">難度 ★★☆</span></div>
+        </div></div>
+      <div class="step"><div class="stepnum"><div class="circ">5</div><div class="rail"></div></div>
+        <div class="stepbody"><div class="t">LPを量産</div>
+          <div class="d">Hyrox LPを"型"に、ストーリー差し替えでビギナー／アスリート等の派生LPを自分で作る</div>
+          <div class="meta"><span class="tag">Claude＋ChatGPT画像</span><span class="diff">難度 ★★☆</span></div>
+        </div></div>
+      <div class="step"><div class="stepnum"><div class="circ">6</div><div class="rail"></div></div>
+        <div class="stepbody"><div class="t">スキル化して社員へ</div>
+          <div class="d">自分の作業をClaudeに「スキル化」させ、ZIPで社員に配って再現できる状態にする</div>
+          <div class="meta"><span class="tag">Claudeスキル機能</span><span class="diff">難度 ★★★</span></div>
+        </div></div>
+    </div>
+    <p class="foot">①②は今日からでも可（管理画面で完結）／③④が内製化の核（FTP＝これまで制作会社に頼っていた領域を開放）／⑤⑥で"1人→社員"へ横展開</p>
+  </div>
+
+  <!-- 進め方 -->
+  <div class="card">
+    <h2>進め方</h2>
+    <div class="flow">
+      <div class="fbox"><b>Claude研修会</b><br>一緒に画面を触る</div>
+      <span class="arrow">→</span>
+      <div class="fbox"><b>FTPスキルZIP</b><br>DLして当てはめ動かす</div>
+      <span class="arrow">→</span>
+      <div class="fbox"><b>詰まりはZoom</b><br>解消内容をスキルへ反映</div>
+      <span class="arrow">→</span>
+      <div class="fbox"><b>使うほど賢く</b><br>スキルが育つ</div>
+    </div>
+    <p class="foot" style="margin-top:12px">社員展開時はコワークが分かりやすい／本番反映は最初だけ弊社が安全確認→慣れたら範囲を拡大</p>
+    <table style="margin-top:14px">
+      <tr><th>回</th><th>内容</th><th>対応STEP</th></tr>
+      <tr><td>1</td><td>安全の土台＋日常更新ハンズオン</td><td>①②</td></tr>
+      <tr><td>2</td><td>FTPスキルで本番反映＋Claudeでコード調整</td><td>③④</td></tr>
+      <tr><td>3</td><td>LP量産（型の差し替え）＋スキル化して社員へ</td><td>⑤⑥</td></tr>
+      <tr><td>(4)</td><td>予備・応用（詰まり解消／依頼テンプレ）</td><td>補</td></tr>
+    </table>
+    <p class="foot">全3〜4回。坪井様はLP実績ありで2〜3回に圧縮できる可能性が高いです。</p>
+  </div>
+
+  <!-- サイト別線引き -->
+  <div class="card">
+    <h2>サイト別の進め方</h2>
+    <table class="split">
+      <tr><th></th><th>high-alti.jp（サービス）</th><th>high-alti.co.jp（コーポレート）</th></tr>
+      <tr><td>特性</td><td class="ok">直接編集しやすい構成◎</td><td>専門的な構成（コード改修は要注意）</td></tr>
+      <tr><td>内製化の対象</td><td><b>③④の練習・本番を先行</b></td><td>日常更新は自走可／深いコード改修は弊社が担当</td></tr>
+    </table>
+    <p class="foot">jpを内製化の主戦場に、co.jpの深い改修は弊社バックアップで受ける、が安全な分担です。</p>
+  </div>
+
+  <!-- 料金 -->
+  <div class="card price">
+    <h2>料金について</h2>
+    <p>内容（研修回数・伴走の範囲・編集代行の要否）に合わせて<b>別途お見積りをご提案</b>いたします。</p>
+  </div>
+
+  <p class="foot">株式会社斗（hishaku）／ High-Alti様 サイト内製化 研修ご提示資料</p>
+</div>
+</body>
+</html>
