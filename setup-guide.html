@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>GitHub＋Claude Code 導入手順書（無料ではじめる版）</title>
+<style>
+  :root{
+    --navy:#0f2740; --blue:#1d5c96; --sky:#3a8fd4; --ice:#eaf3fb;
+    --line:#d6e2ee; --ink:#243244; --sub:#5b6b7d; --gold:#d99b2b;
+    --green:#2e9e6b; --red:#c0492f; --bg:#f4f7fb; --card:#fff;
+    --win:#0067b8; --mac:#444;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.75; padding:32px 16px;}
+  .wrap{max-width:1040px; margin:0 auto;}
+  .badge{display:inline-block; background:var(--gold); color:#fff; font-size:12px;
+    font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:.05em;}
+  h1{font-size:26px; color:var(--navy); margin:12px 0 4px; letter-spacing:.02em}
+  .lead{color:var(--sub); font-size:14px; margin-bottom:24px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:22px 24px; margin-bottom:22px; box-shadow:0 2px 10px rgba(15,39,64,.04)}
+  .card h2{font-size:18px; color:var(--blue); margin-bottom:14px;
+    padding-left:12px; border-left:5px solid var(--sky);}
+  .card h2 .sm{font-size:13px; color:var(--sub); font-weight:400; margin-left:6px}
+  .concl{background:#fff8ec; border-color:#f0dcb0}
+  .concl h2{color:var(--gold); border-color:var(--gold)}
+  .concl ol{margin-left:20px} .concl li{margin-bottom:8px; font-size:14.5px}
+
+  /* STEP見出し */
+  .step{background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:0; margin-bottom:22px; box-shadow:0 2px 10px rgba(15,39,64,.04); overflow:hidden}
+  .step > .hd{display:flex; align-items:center; gap:14px; background:var(--navy); color:#fff; padding:14px 22px}
+  .step > .hd .n{flex:0 0 40px;height:40px;border-radius:50%;background:var(--sky);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px}
+  .step > .hd .tt{font-size:17px; font-weight:700}
+  .step > .hd .tm{margin-left:auto; font-size:12.5px; color:#ffd98a; font-weight:700; white-space:nowrap}
+  .step > .bd{padding:18px 22px}
+  .step .goal{background:var(--ice); border-radius:8px; padding:10px 14px; font-size:13.5px; margin-bottom:14px}
+  .step .goal b{color:var(--navy)}
+  .step ol{margin-left:20px; font-size:14px}
+  .step ol > li{margin-bottom:10px}
+  .step ul{margin-left:20px; font-size:13.5px; color:var(--sub)}
+
+  /* OS別 */
+  .os{border:1px solid var(--line); border-radius:10px; overflow:hidden; margin:12px 0}
+  .os .oh{padding:8px 14px; font-size:13px; font-weight:700; color:#fff}
+  .os.w .oh{background:var(--win)} .os.m .oh{background:var(--mac)}
+  .os .ob{padding:12px 14px; font-size:13.5px}
+  .osgrid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+
+  code{font-family:"SF Mono",Menlo,Consolas,monospace; font-size:12.5px;
+    background:#eef3f8; border-radius:4px; padding:1px 5px; color:#12406e}
+  pre{font-family:"SF Mono",Menlo,Consolas,monospace; font-size:12.5px; background:#0f2740; color:#e8f1fa;
+    border-radius:8px; padding:12px 14px; overflow-x:auto; margin:8px 0; line-height:1.7}
+  pre .cm{color:#8fb4d6}
+
+  .chk{background:#f2fbf6; border:1px solid #bfe4d2; border-radius:8px; padding:10px 14px; font-size:13.5px; margin-top:10px}
+  .chk b{color:var(--green)}
+  .warnbox{background:#fff6f4; border:1px solid #f0cfc6; border-radius:8px; padding:10px 14px; font-size:13.5px; margin-top:10px}
+  .warnbox b{color:var(--red)}
+  .notebox{background:#fffaf3; border:1px solid #edd6ab; border-radius:8px; padding:10px 14px; font-size:13.5px; margin-top:10px}
+  .notebox b{color:var(--gold)}
+
+  table{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:4px}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top}
+  th{background:var(--ice); color:var(--navy); font-weight:700}
+  .ok{color:var(--green); font-weight:700}
+  .ng{color:var(--red); font-weight:700}
+
+  .parts{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+  .pt{background:var(--ice); border-radius:12px; padding:14px 16px; border-top:4px solid var(--sky)}
+  .pt .pn{font-size:11.5px; font-weight:700; color:var(--sky); letter-spacing:.05em}
+  .pt h3{font-size:14.5px; color:var(--navy); margin:4px 0 5px}
+  .pt p{font-size:12.5px; color:var(--sub)}
+
+  .dont{background:#fff6f4; border-color:#f0cfc6}
+  .dont h2{color:var(--red); border-color:var(--red)}
+  .dont ul{margin-left:18px; font-size:13.5px} .dont li{margin-bottom:7px}
+
+  .word dt{font-weight:700; color:var(--navy); font-size:13.5px; margin-top:9px}
+  .word dt:first-child{margin-top:0}
+  .word dd{font-size:13px; color:var(--sub)}
+
+  .foot{font-size:11.5px; color:var(--sub); text-align:center; margin-top:8px}
+  @media(max-width:820px){.parts{grid-template-columns:1fr 1fr}}
+  @media(max-width:760px){
+    .osgrid,.parts{grid-template-columns:1fr}
+    .step > .hd{flex-wrap:wrap} .step > .hd .tm{margin-left:0; flex-basis:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="badge">High Altitude Management様 ／ 安蒜様向け</span>
+  <h1>GitHub ＋ Claude Code 導入手順書<span style="font-size:16px;color:var(--sub)">（無料ではじめる版）</span></h1>
+  <p class="lead">2026-08-03 ／ パソコンの専門知識ゼロを前提に、Windows・Mac 両方の手順を書いています。<br>
+  所要時間の目安：<b>合計75分</b>（1日で終わらせず、STEPごとに区切って進めて大丈夫です）</p>
+
+  <!-- 最初に -->
+  <div class="card concl">
+    <h2>★はじめに ─ この手順書で何ができるようになるか</h2>
+    <ol>
+      <li><b>AIに「資料を作って」と日本語で頼むと、そのまま見られる資料ができる。</b>弊社が御社にお出ししている図解資料も、この環境で作っています。</li>
+      <li><b>作った資料が自動で保存され、URLで人に見せられる。</b>ファイルを添付して送る必要がなくなります。</li>
+      <li><b>費用は0円で始められます。</b>ただし後述の通り<b>無料には明確な制限があります</b>ので、そこは正直にお伝えします。</li>
+    </ol>
+  </div>
+
+  <!-- 全体像 -->
+  <div class="card">
+    <h2>全体像 <span class="sm">─ 4つの部品を順番に入れるだけです</span></h2>
+    <div class="parts">
+      <div class="pt"><div class="pn">STEP 1</div><h3>GitHub</h3><p>作った資料を保管して、URLで見せられるようにする「倉庫」。無料。</p></div>
+      <div class="pt"><div class="pn">STEP 2</div><h3>Node.js</h3><p>次の道具を動かすための土台。1回入れたら以後さわりません。無料。</p></div>
+      <div class="pt"><div class="pn">STEP 3・5</div><h3>Claude Code</h3><p>AIに日本語で頼むと、資料やファイルを実際に作ってくれる道具。</p></div>
+      <div class="pt"><div class="pn">STEP 4</div><h3>OpenRouter</h3><p>AIの「頭脳」を無料で借りる先。カード登録なしで使えます。</p></div>
+    </div>
+    <div class="notebox" style="margin-top:14px">
+      <b>この手順の位置づけ：</b>本来 Claude Code は Claude（月3,000円台）を頭脳として動かす道具です。この手順書では費用0円を優先し、<b>頭脳の部分だけ無料のAI（DeepSeek等）に差し替えて</b>使います。そのため<b>答えの質はClaude本体より落ちます</b>。まず0円で体験し、物足りなければSTEP 7で正規版に切り替える、という流れをおすすめします。
+    </div>
+  </div>
+
+  <!-- 先に知っておく制限 -->
+  <div class="card dont">
+    <h2>先に知っておいてください ─ 無料ルートの3つの制限</h2>
+    <ul>
+      <li><b>1日50回まで。</b>無料枠は1日50リクエスト・1分20リクエストが上限です（OpenRouterに一度$10課金すると1日1000回に緩和されます）。資料を2〜3本作ると到達することがあります。</li>
+      <li><b>答えの質はClaude本体より落ちます。</b>頭脳が別のAIに変わるためです。「AIで資料が作れるか試す」目的には十分ですが、本番の提案書を任せきるには物足りない可能性があります。</li>
+      <li><b>会社の機密情報・会員様の個人情報は入力しないでください。</b>無料サービスは入力内容をAIの学習に使う場合があります。氏名・メール・住所・売上明細などは、この環境では扱わないでください。</li>
+    </ul>
+    <div class="warnbox"><b>迷ったら：</b>まず無料で「AIで資料が作れる感覚」をつかむ → 実務で使うと決めたら Claude Pro（月3,000円台）に切り替える。この順番が安全かつ確実です。切り替え方はSTEP 7に書いています。</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <div class="hd"><div class="n">1</div><div class="tt">GitHub に登録する</div><div class="tm">約10分</div></div>
+    <div class="bd">
+      <div class="goal"><b>ゴール：</b>github.com にログインできる状態になる。作った資料の保管庫です。</div>
+      <ol>
+        <li>ブラウザで <code>github.com</code> を開く</li>
+        <li>右上の <b>「Sign up」</b>（サインアップ）をクリック</li>
+        <li>メールアドレス → パスワード → ユーザー名（半角英数字。例：<code>anbiru-ha</code>）を順に入力
+          <ul><li>ユーザー名は後からURLに出ます。会社名やお名前のローマ字が無難です</li></ul></li>
+        <li>入力したメールアドレスに届く<b>認証コード</b>を入力</li>
+        <li>「What do you want to do?」等のアンケートは<b>すべてスキップして構いません</b></li>
+        <li>プラン選択は <b>Free（無料）</b> を選ぶ</li>
+      </ol>
+      <div class="chk"><b>✔ 確認：</b>ログインした状態で <code>github.com</code> を開き、右上に自分のアイコンが出ていればOKです。</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <div class="hd"><div class="n">2</div><div class="tt">Node.js を入れる（土台づくり）</div><div class="tm">約15分</div></div>
+    <div class="bd">
+      <div class="goal"><b>ゴール：</b>黒い画面（ターミナル）で <code>node -v</code> と打つと <code>v22</code> 以上と表示される。<br>
+      ※ Node.js 自体を使うわけではありません。次の道具を動かすための土台です。<b>1回入れたら以後さわりません。</b></div>
+
+      <div class="osgrid">
+        <div class="os w"><div class="oh">Windows の場合</div><div class="ob">
+          <b>① 黒い画面を開く</b><br>
+          キーボードの <code>Windowsキー</code> を押して <b>powershell</b> と入力 → 「Windows PowerShell」を<b>右クリック</b> → <b>「管理者として実行」</b><br><br>
+          <b>② 下記を貼り付けて Enter</b>
+          <pre>winget install OpenJS.NodeJS.LTS</pre>
+          途中で規約への同意を聞かれたら <code>Y</code> を入力して Enter。<br><br>
+          <b>③ 画面をいったん閉じて、開き直す</b>（重要。閉じないと次の確認が失敗します）
+        </div></div>
+
+        <div class="os m"><div class="oh">Mac の場合</div><div class="ob">
+          <b>① 黒い画面を開く</b><br>
+          <code>command</code> + <code>スペース</code> を押して <b>ターミナル</b> と入力 → Enter<br><br>
+          <b>② Homebrew（導入用の道具）を入れる</b>
+          <pre>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre>
+          途中でMacのパスワードを聞かれます。<b>打っても画面に何も表示されませんが、入力はされています</b>。そのまま打って Enter。<br><br>
+          <b>③ Node.js を入れる</b>
+          <pre>brew install node</pre>
+        </div></div>
+      </div>
+
+      <b style="font-size:14px">④ 入ったか確認する（Windows・Mac共通）</b>
+      <pre>node -v</pre>
+      <div class="chk"><b>✔ 確認：</b><code>v22.x.x</code> のように<b>22以上</b>の数字が出ればOKです。</div>
+      <div class="warnbox"><b>数字が20以下だった場合：</b>この道具は Node.js 22以上が必要です。Windowsは <code>winget upgrade OpenJS.NodeJS.LTS</code>、Macは <code>brew upgrade node</code> を実行してから、もう一度 <code>node -v</code> で確認してください。</div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <div class="hd"><div class="n">3</div><div class="tt">Claude Code と接続ツールを入れる</div><div class="tm">約5分</div></div>
+    <div class="bd">
+      <div class="goal"><b>ゴール：</b>2つの道具がパソコンに入る。STEP 2の黒い画面をそのまま使います。</div>
+      <b style="font-size:14px">下記を1行ずつ貼り付けて Enter（Windows・Mac共通）</b>
+      <pre><span class="cm"># ① AIに作業させる道具（本体）</span>
+npm install -g @anthropic-ai/claude-code
+
+<span class="cm"># ② 無料のAIに繋ぎ替えるための道具</span>
+npm install -g @musistudio/claude-code-router</pre>
+      <ul style="margin-top:10px">
+        <li>それぞれ1〜3分かかります。文字がたくさん流れますが、正常です</li>
+        <li>Macで <code>permission denied</code> と出たら、行の先頭に <code>sudo </code> を付けて再実行し、Macのパスワードを入力してください</li>
+      </ul>
+      <div class="chk"><b>✔ 確認：</b><code>ccr -h</code> と打って、<code>Usage:</code> で始まる説明が出ればOKです。</div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step">
+    <div class="hd"><div class="n">4</div><div class="tt">OpenRouter に登録して「鍵」を取る</div><div class="tm">約10分</div></div>
+    <div class="bd">
+      <div class="goal"><b>ゴール：</b><code>sk-or-v1-</code> で始まる長い文字列（APIキー＝鍵）を手元にコピーできている状態。<br>
+      ※ 無料のAIを借りるための窓口です。<b>クレジットカード登録は不要</b>です。</div>
+      <ol>
+        <li>ブラウザで <code>openrouter.ai</code> を開く</li>
+        <li>右上の <b>「Sign in」</b> → <b>「Continue with GitHub」</b>（STEP 1で作ったアカウントでログインできます）</li>
+        <li>ログイン後、右上のアイコン → <b>「Keys」</b> をクリック</li>
+        <li><b>「Create Key」</b> をクリック → 名前は <code>claude-code</code> など何でも構いません → 作成</li>
+        <li><b>表示された文字列をコピーして、メモ帳などに貼って保存</b>
+          <ul><li><b>この画面を閉じると二度と表示されません。</b>必ず先に控えてください</li>
+              <li>この鍵は<b>パスワードと同じ</b>です。人に見せない・チャットに貼らないでください</li></ul></li>
+      </ol>
+      <div class="chk"><b>✔ 確認：</b>メモ帳に <code>sk-or-v1-xxxxxxxx...</code> という長い文字列が保存されていればOKです。</div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step">
+    <div class="hd"><div class="n">5</div><div class="tt">無料のAIに繋ぎ替える（設定画面で操作）</div><div class="tm">約15分</div></div>
+    <div class="bd">
+      <div class="goal"><b>ゴール：</b>ブラウザの設定画面で、STEP 4の鍵を登録して接続が完了する。<br>ここは<b>マウス操作の画面</b>なので、黒い画面より簡単です。</div>
+      <b style="font-size:14px">① 設定画面を開く（黒い画面で実行）</b>
+      <pre>ccr ui</pre>
+      <p style="font-size:13.5px;margin-top:6px">ブラウザが自動で開きます（開かない場合は <code>http://127.0.0.1:3458</code> を手で開いてください）。</p>
+
+      <b style="font-size:14px;display:block;margin-top:14px">② AIの提供元を登録する</b>
+      <ol>
+        <li>左メニューの <b>Providers</b> → <b>Add Provider</b></li>
+        <li><b>OpenRouter</b> を選ぶ</li>
+        <li><b>API Key</b> の欄に、STEP 4でコピーした鍵を貼り付け</li>
+        <li>モデル一覧から、名前の<b>末尾が <code>:free</code> のもの</b>を選ぶ（これが無料の目印です）
+          <ul><li>例：<code>deepseek/deepseek-chat-v3:free</code> など。一覧は時期によって入れ替わります</li></ul></li>
+        <li>保存</li>
+      </ol>
+
+      <b style="font-size:14px;display:block;margin-top:10px">③ 接続する</b>
+      <ol>
+        <li><b>Agent Config</b> を開く</li>
+        <li>エージェント一覧から <b>Claude Code</b> を選ぶ</li>
+        <li>②で登録したモデルを選んで <b>適用（Apply）</b></li>
+        <li>この<b>プロファイル名をメモ</b>してください（次のSTEPで使います）</li>
+        <li><b>Server</b> を開いて <b>Start</b> をクリック</li>
+      </ol>
+      <div class="chk"><b>✔ 確認：</b>Server の表示が「起動中（Running）」になっていればOKです。</div>
+      <div class="notebox"><b>ネット上の古い情報にご注意：</b>「<code>ccr code</code> と打つ」と書いてある記事が多くありますが、それは<b>旧バージョンの書き方</b>で、現在（v3系）では動きません。上記の設定画面から進めてください。</div>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step">
+    <div class="hd"><div class="n">6</div><div class="tt">実際に資料を1本つくってみる</div><div class="tm">約20分</div></div>
+    <div class="bd">
+      <div class="goal"><b>ゴール：</b>AIに日本語で頼んで、資料のHTMLファイルが1つできる。ここまで来れば導入完了です。</div>
+
+      <b style="font-size:14px">① 作業用のフォルダを作って、その中で起動する</b>
+      <pre><span class="cm"># デスクトップに shiryo という作業フォルダを作る</span>
+cd Desktop
+mkdir shiryo
+cd shiryo
+
+<span class="cm"># STEP 5でメモしたプロファイル名で起動（例：default）</span>
+ccr default</pre>
+      <p style="font-size:13.5px;margin-top:6px">起動すると、画面下に文字を打ち込める状態になります。ここが<b>AIとの会話欄</b>です。</p>
+
+      <b style="font-size:14px;display:block;margin-top:14px">② 日本語でそのまま頼む</b>
+      <pre>会社の月次report用のHTMLを1枚作ってください。
+内容は「今月の売上・課題・来月の打ち手」の3セクション。
+数字は仮でOK。スマホでも崩れないようにしてください。</pre>
+      <ul style="margin-top:8px">
+        <li>ファイルを作ってよいか聞かれたら <b>Yes</b> を選んでください（矢印キーで選んで Enter）</li>
+        <li>できあがったファイルは、デスクトップの <code>shiryo</code> フォルダに入ります</li>
+        <li><b>ダブルクリックで開けば、そのままブラウザで資料が見られます</b></li>
+      </ul>
+
+      <b style="font-size:14px;display:block;margin-top:14px">③ 直したいところを日本語で伝える</b>
+      <pre>売上のセクションに棒グラフを足してください。
+文字が小さいのでもう少し大きく。</pre>
+      <div class="chk"><b>✔ 確認：</b>フォルダの中にHTMLファイルができ、ブラウザで開けたら<b>導入完了です。おつかれさまでした。</b></div>
+      <div class="notebox"><b>GitHubに保存して人に見せたくなったら：</b>会話欄に「<b>このフォルダをGitHubに保存して、URLで見られるようにして</b>」と日本語で頼めば、AIが手順を案内しながら進めてくれます。最初の1回だけログイン操作が入ります。</div>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step">
+    <div class="hd"><div class="n">7</div><div class="tt">物足りなくなったら正規版に切り替える</div><div class="tm">約5分</div></div>
+    <div class="bd">
+      <div class="goal"><b>ゴール：</b>頭脳を本物のClaudeに戻す。ここまでの設定はすべてそのまま使えます。</div>
+      <p style="font-size:14px;margin-bottom:10px"><b>切り替えを検討する目安：</b></p>
+      <table>
+        <tr><th>こうなったら</th><th>意味</th></tr>
+        <tr><td>「1日の上限に達しました」と出る</td><td>無料枠の50回を使い切っています。実務で使えている証拠でもあります</td></tr>
+        <tr><td>指示と違うものが返ってくる</td><td>頭脳が無料AIのためです。Claude本体なら解消する可能性が高いです</td></tr>
+        <tr><td>長い資料を読ませると途中で切れる</td><td>無料モデルは扱える分量が小さいためです</td></tr>
+      </table>
+      <p style="font-size:14px;margin-top:12px"><b>切り替え方：</b></p>
+      <ol>
+        <li><code>claude.ai</code> で会員登録し、<b>Pro（月20ドル・約3,000円台）</b>に加入</li>
+        <li>黒い画面で <code>ccr stop</code> と打って、繋ぎ替えツールを止める</li>
+        <li>作業フォルダで <code>claude</code> と打つ → ブラウザが開くのでログインを許可</li>
+      </ol>
+      <div class="chk"><b>これだけです。</b>STEP 1〜3・6で覚えた操作はまったく同じまま、頭脳だけが本物のClaudeに変わります。</div>
+    </div>
+  </div>
+
+  <!-- つまずいた時 -->
+  <div class="card">
+    <h2>つまずいた時 <span class="sm">─ よくある症状と対処</span></h2>
+    <table>
+      <tr><th>症状</th><th>原因と対処</th></tr>
+      <tr><td><code>command not found</code><br><code>認識されていません</code></td><td>道具が入っていないか、画面を開き直していません。<b>黒い画面を一度閉じて開き直す</b>と直ることがほとんどです。</td></tr>
+      <tr><td><code>node -v</code> の数字が20以下</td><td>Node.jsが古いです。Windows: <code>winget upgrade OpenJS.NodeJS.LTS</code> ／ Mac: <code>brew upgrade node</code></td></tr>
+      <tr><td>Macで <code>permission denied</code></td><td>権限不足です。同じコマンドの先頭に <code>sudo </code> を付けて再実行し、Macのパスワードを入力してください。</td></tr>
+      <tr><td>設定画面が開かない</td><td>ブラウザで <code>http://127.0.0.1:3458</code> を直接開いてください。それでも駄目なら <code>ccr stop</code> → <code>ccr ui</code> でやり直します。</td></tr>
+      <tr><td><code>Rate limit</code> / 上限エラー</td><td>無料枠（1日50回）を使い切りました。<b>翌日まで待つ</b>か、STEP 7で正規版に切り替えてください。</td></tr>
+      <tr><td>AIの答えがおかしい</td><td>無料AIの限界です。日本語で「もっと短く」「作り直して」と伝えて再挑戦。改善しなければSTEP 7へ。</td></tr>
+      <tr><td>途中で完全に分からなくなった</td><td><b>そこで止めてご連絡ください。</b>画面を共有しながら一緒に進めます。無理に進めて設定を壊すより早く終わります。</td></tr>
+    </table>
+  </div>
+
+  <!-- やってはいけない -->
+  <div class="card dont">
+    <h2>やってはいけないこと</h2>
+    <ul>
+      <li><b>会員様の氏名・メール・住所を入力しない。</b>無料AIは入力内容を学習に使う場合があります。個人情報を含むデータは、正規版に切り替えるまで扱わないでください。</li>
+      <li><b>APIキー（<code>sk-or-v1-</code>の文字列）を人に見せない。</b>パスワードと同じです。チャットやメールに貼らないでください。</li>
+      <li><b>意味の分からないコマンドを、ネットからコピーして実行しない。</b>この手順書に載っているもの以外を実行する時は、一度ご相談ください。</li>
+      <li><b>本番のサイトが入っているフォルダで作業しない。</b>必ず新しく作った <code>shiryo</code> のような空フォルダで練習してください。</li>
+    </ul>
+  </div>
+
+  <!-- 用語 -->
+  <div class="card">
+    <h2>この手順書に出てくる言葉</h2>
+    <dl class="word">
+      <dt>ターミナル / PowerShell（黒い画面）</dt><dd>文字で命令を打ち込む画面。今回は<b>決められた文字を貼り付けるだけ</b>で、中身を理解する必要はありません。</dd>
+      <dt>Claude Code</dt><dd>AIに日本語で頼むと、実際にファイルを作ったり直したりしてくれる道具。今回の主役です。</dd>
+      <dt>Node.js</dt><dd>上の道具を動かすための土台。1回入れたら以後さわりません。</dd>
+      <dt>OpenRouter</dt><dd>いろいろなAIをまとめて借りられる窓口。無料で使えるAIが用意されています。</dd>
+      <dt>APIキー</dt><dd>そのサービスを使うための鍵。パスワードと同じ扱いをしてください。</dd>
+      <dt>GitHub</dt><dd>作ったファイルを保管し、URLで人に見せられるようにする倉庫。無料です。</dd>
+      <dt>リポジトリ</dt><dd>GitHubの中の「フォルダ1つ」だと思ってください。案件ごとに1つ作ります。</dd>
+    </dl>
+  </div>
+
+  <div class="card">
+    <p style="font-size:14px">つまずいたら、<b>そのままの画面でご連絡ください。</b>エラー文をそのままコピーして送っていただければ、こちらで原因を特定します。内製化研修の中でも、この環境をそのまま使って進められます。</p>
+  </div>
+
+  <p class="foot"><a href="./ai-tools.html" style="color:var(--blue)">← ツール選定ガイドに戻る</a>　｜　<a href="./index.html" style="color:var(--blue)">内製化ご提案（全体像）</a></p>
+  <p class="foot">株式会社斗（hishaku）／ 2026-08-03 作成<br>
+  ※ 手順は claude-code-router v3.0.18（2026-08-04時点）で確認。バージョン更新で画面が変わる場合があります。</p>
+</div>
+</body>
+</html>

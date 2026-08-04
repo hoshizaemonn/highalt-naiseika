@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>資料作成でAIを使うなら ― ツール選定ガイド（High-Alti様向け）</title>
+<title>資料作成でAIを使うなら ― はじめ方ガイド（High Altitude Management様向け）</title>
 <style>
   :root{
     --navy:#0f2740; --blue:#1d5c96; --sky:#3a8fd4; --ice:#eaf3fb;
@@ -13,7 +13,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
-    background:var(--bg); color:var(--ink); line-height:1.7; padding:32px 16px;}
+    background:var(--bg); color:var(--ink); line-height:1.75; padding:32px 16px;}
   .wrap{max-width:1040px; margin:0 auto;}
   .badge{display:inline-block; background:var(--gold); color:#fff; font-size:12px;
     font-weight:700; padding:4px 12px; border-radius:20px; letter-spacing:.05em;}
@@ -23,6 +23,7 @@
     padding:22px 24px; margin-bottom:22px; box-shadow:0 2px 10px rgba(15,39,64,.04)}
   .card h2{font-size:18px; color:var(--blue); margin-bottom:14px;
     padding-left:12px; border-left:5px solid var(--sky);}
+  .card h2 .sm{font-size:13px; color:var(--sub); font-weight:400; margin-left:6px}
   .concl{background:#fff8ec; border-color:#f0dcb0}
   .concl h2{color:var(--gold); border-color:var(--gold)}
   .concl ol{margin-left:20px} .concl li{margin-bottom:8px; font-size:14.5px}
@@ -30,6 +31,23 @@
   .goal h2{color:#fff; border-color:var(--gold)}
   .goal .big{font-size:19px; font-weight:700; margin:8px 0}
   .goal .money{color:#ffd98a; font-weight:700}
+
+  /* はじめ方 3ステップ */
+  .steps{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px}
+  .st{background:var(--ice); border-radius:12px; padding:16px 18px; border-top:4px solid var(--sky); position:relative}
+  .st .n{display:inline-flex; width:30px;height:30px;border-radius:50%;background:var(--sky);color:#fff;
+    align-items:center;justify-content:center;font-weight:800;font-size:15px;margin-bottom:8px}
+  .st h3{font-size:15px; color:var(--navy); margin-bottom:6px}
+  .st p{font-size:13.5px; color:var(--sub)}
+  .st .time{position:absolute; top:14px; right:16px; font-size:11.5px; font-weight:700; color:var(--gold)}
+  .st b{color:var(--ink)}
+
+  /* コピペ用プロンプト */
+  .pmt{background:#fbfdff; border:1px solid var(--line); border-left:4px solid var(--sky);
+    border-radius:8px; padding:13px 16px; margin-top:10px}
+  .pmt .lbl{font-size:12px; font-weight:700; color:var(--blue); margin-bottom:5px}
+  .pmt .body{font-family:"SF Mono",Menlo,Consolas,monospace; font-size:12.5px; color:var(--ink);
+    background:#fff; border:1px dashed var(--line); border-radius:6px; padding:10px 12px; white-space:pre-wrap; line-height:1.65}
 
   /* 積み上げステップ */
   .stack{display:flex; flex-direction:column; gap:12px}
@@ -81,55 +99,138 @@
   .dont h2{color:var(--red); border-color:var(--red)}
   .dont ul{margin-left:18px; font-size:13.5px} .dont li{margin-bottom:7px}
 
+  .warn{background:#fffaf3; border:1px solid #edd6ab}
+  .warn h2{color:var(--gold); border-color:var(--gold)}
+  .warn .quote{background:#fff; border:1px solid var(--line); border-radius:8px;
+    padding:11px 14px; font-size:13px; color:var(--sub); margin-bottom:12px}
+  .warn table td:first-child{width:32%; font-weight:700; color:var(--navy); background:#fffdf8}
+
+  .word{background:var(--ice); border-radius:10px; padding:14px 18px; margin-top:12px}
+  .word dt{font-weight:700; color:var(--navy); font-size:13.5px; margin-top:8px}
+  .word dt:first-child{margin-top:0}
+  .word dd{font-size:13px; color:var(--sub); margin-left:0}
+
   .foot{font-size:11.5px; color:var(--sub); text-align:center; margin-top:8px}
-  @media(max-width:760px){.cards3{grid-template-columns:1fr} .cmp th:first-child{width:auto}
-    .lvbody .price{float:none; display:block; margin-bottom:2px}}
+  @media(max-width:760px){
+    .cards3,.steps{grid-template-columns:1fr}
+    .cmp th:first-child{width:auto}
+    .lvbody .price{float:none; display:block; margin-bottom:2px}
+    .warn table td:first-child{width:auto}
+    .st .time{position:static; display:block; margin-bottom:4px}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <span class="badge">High-Alti様 ／ 坪井様ご質問への回答</span>
-  <h1>資料作成でAIを使うなら ─ ツール選定ガイド</h1>
-  <p class="lead">2026-08-03 ／「自分でAIを使って仕事したい。資料作成でコスパの良いおすすめは？」へのお答え</p>
+  <span class="badge">High Altitude Management様 ／ 安蒜様ご質問への回答</span>
+  <h1>資料作成でAIを使うなら ─ はじめ方ガイド</h1>
+  <p class="lead">2026-08-03 ／「自分でAIを使って仕事したい。資料作成でコスパの良いおすすめは？」へのお答え<br>
+  ※ AIをこれから始める方向けに、専門用語なし・今日から動ける形で書いています。</p>
 
   <!-- 結論 -->
   <div class="card concl">
     <h2>★結論（ここだけ読めば大丈夫）</h2>
     <ol>
-      <li><b>Claude 1本から始めてください。</b>月3,000円台。資料作成に必要なことの8割はこれで足ります。</li>
-      <li><b>いきなり複数契約しないでください。</b>足りないと感じてから足すのが一番コスパが良いです。</li>
-      <li>差が出るのは<b>ツールの数ではなく「Projects に自社資料を入れているか」</b>。同じ月3,000円の効果が数倍変わります。</li>
+      <li><b>Claude（クロード）を1つだけ契約してください。</b>月3,000円台。資料作成に必要なことの8割はこれで足ります。</li>
+      <li><b>難しい設定は一切いりません。</b>会員登録してアプリを入れるだけ。LINEを始めるのと同じくらいの手間です（合計15分）。</li>
+      <li><b>いきなり複数契約しないでください。</b>1ヶ月使って足りないと感じてから足すのが、一番ムダがありません。</li>
     </ol>
   </div>
 
   <!-- ゴール -->
   <div class="card goal">
     <h2>目指す状態</h2>
-    <p class="big">議事録・メモ・過去資料を放り込むだけで、<br>提案書・報告書・社内資料が“形になった状態”で出てくる。</p>
-    <p>現状：資料づくりは <span class="money">1本つくるのに半日〜1日</span>。体裁を整える時間が大半。<br>
-    導入後：<b>中身を考える時間だけ</b>にできる。体裁・構成・文章の下書きはAIが担当。<br>
-    ※ 坪井様は既にサイト内製化でClaudeをお使いなので、<b>同じ道具の延長</b>で資料作成にも入れます。</p>
+    <p class="big">議事録・メモ・過去の資料を放り込むだけで、<br>提案書・報告書・社内資料が“形になった状態”で出てくる。</p>
+    <p>今：資料づくりは <span class="money">1本つくるのに半日〜1日</span>。体裁を整える作業が大半。<br>
+    導入後：<b>中身を考える時間だけ</b>にできる。構成・文章の下書き・体裁はAIが担当。<br>
+    ※ 御社では既にサイトの内製化でClaudeを使い始めているため、<b>同じ道具の延長</b>で資料作成にも入れます。</p>
+  </div>
+
+  <!-- ★はじめ方 -->
+  <div class="card">
+    <h2>はじめ方 <span class="sm">─ 全部で15分。パソコンの知識は不要です</span></h2>
+    <div class="steps">
+      <div class="st"><span class="time">5分</span><span class="n">1</span>
+        <h3>会員登録する</h3>
+        <p><b>claude.ai</b> をブラウザで開き、Googleアカウント（普段お使いのGmail）でログインするだけ。<br>
+        まず無料のまま画面が開きます。</p></div>
+      <div class="st"><span class="time">5分</span><span class="n">2</span>
+        <h3>有料プランにする</h3>
+        <p>画面内の「アップグレード」から <b>Pro（月20ドル・約3,000円台）</b>を選択。クレジットカード登録のみで完了します。<br>
+        <b>無料のままでは判断しないでください</b>（性能が抑えられていて実力が分かりません）。</p></div>
+      <div class="st"><span class="time">5分</span><span class="n">3</span>
+        <h3>アプリを入れる</h3>
+        <p>同じサイトからパソコン用アプリとスマホアプリをダウンロード。<br>
+        入れておくと<b>思いついた時にすぐ開ける</b>ので、使う頻度が変わります。</p></div>
+    </div>
+    <p class="foot" style="margin-top:14px">難しい設定・専門知識・プログラミングの画面は一切出てきません。<b>普段のチャットアプリと同じ</b>で、下の入力欄に日本語で話しかけるだけです。</p>
+  </div>
+
+  <!-- コピペで使える -->
+  <div class="card">
+    <h2>最初にやってみる3つ <span class="sm">─ そのままコピーして貼るだけ</span></h2>
+    <p style="font-size:13.5px;color:var(--sub);margin-bottom:4px">〔　〕の中をご自身の内容に置き換えて、入力欄に貼り付けてください。資料やメモはドラッグして放り込めます。</p>
+
+    <div class="pmt"><div class="lbl">① 議事録をまとめる</div>
+      <div class="body">この打ち合わせメモを、社内共有用に1枚でまとめてください。
+決まったこと／宿題（誰がいつまでに）／次回の議題、の3つに分けてください。
+
+〔ここにメモをそのまま貼る〕</div></div>
+
+    <div class="pmt"><div class="lbl">② 資料のたたきを作る</div>
+      <div class="body">〔社長〕に読んでもらって〔導入をOKしてもらう〕ための資料を作りたいです。
+まず構成案だけ、見出しレベルで出してください。私が選んでから中身を書きます。
+
+前提：〔何の資料か、背景を3〜4行で〕</div></div>
+
+    <div class="pmt"><div class="lbl">③ 長い資料を要点だけにする</div>
+      <div class="body">この資料を、忙しい人が30秒で把握できるように要点3つにしてください。
+専門用語は避けて、結論から書いてください。
+
+〔資料を貼るか、ファイルを放り込む〕</div></div>
+
+    <p class="foot" style="margin-top:14px">返ってきたものが違ったら、そのまま日本語で「<b>もっと短く</b>」「<b>もう少し固い言い方で</b>」「<b>2案目を出して</b>」と返すだけで直ります。<b>やり直しは無料です</b>ので、遠慮なく何度でも。</p>
+  </div>
+
+  <!-- ★無料ではじめる -->
+  <div class="card warn">
+    <h2>0円ではじめたい場合 <span class="sm">─ 手順書をご用意しました</span></h2>
+    <div class="quote">
+      「GitHubのあるリポジトリを使うと Claude Code が完全無料で使える。DeepSeekやKimiなど無料サービスに接続を切り替える」──こうした情報がSNSで出回っています。<b>実際に可能です。</b>その手順を、パソコンの知識ゼロ前提で1本にまとめました。
+    </div>
+    <p style="font-size:15px;margin-bottom:12px">
+      <a href="./setup-guide.html" style="color:var(--blue);font-weight:700">▶ GitHub＋Claude Code 導入手順書（無料ではじめる版）を見る</a>
+      <span style="color:var(--sub);font-size:13px">　Windows・Mac両対応／所要75分／費用0円</span>
+    </p>
+    <p style="font-size:14px;margin-bottom:10px"><b>ただし、先に知っておいていただきたい制限が4つあります。</b></p>
+    <table>
+      <tr><td>中身はClaudeではない</td><td>画面はClaudeでも、<b>実際に答えるのは DeepSeek などの別のAI</b>に切り替わります。「文章の質が良いからClaude」という本ページのおすすめ理由は、この方法では当てはまりません。</td></tr>
+      <tr><td>1日50回までの上限</td><td>無料枠は<b>1日50リクエスト</b>が上限です。資料を2〜3本作ると到達することがあります。</td></tr>
+      <tr><td>設定に75分ほど必要</td><td>SNSでは「5分」とありますが、それは既に開発環境がある方の話です。ゼロから始める場合、<b>登録4種類＋導入作業</b>で1〜2時間見ておくのが現実的です（手順書はその前提で書いています）。</td></tr>
+      <tr><td>機密情報は入れられない</td><td>無料サービスは<b>入力内容をAIの学習に使う場合があります</b>。会員様の個人情報・売上明細などは、この環境では扱わないでください。</td></tr>
+    </table>
+    <p class="foot" style="margin-top:12px;text-align:left"><b>おすすめの進め方：</b>まず0円で「AIで資料が作れる」感覚をつかむ → 実務で使うと決めたら Claude Pro（月3,000円台）に切り替える。<b>切り替えても操作は同じ</b>なので、覚えたことは無駄になりません（手順書STEP 7）。</p>
   </div>
 
   <!-- 積み上げ -->
   <div class="card">
-    <h2>導入の順番（積み上げ式・上から順に足す）</h2>
+    <h2>もし足りなくなったら（足す順番）</h2>
     <div class="stack">
       <div class="lv"><div class="lvnum"><div class="circ">1</div><div class="rail"></div></div>
         <div class="lvbody core"><span class="price">約3,000円/月</span><div class="t">Claude Pro</div>
-          <div class="d">資料の文章・構成・議事録要約・メール文・企画のたたき。長い資料を読ませて要約・再構成させるのが最も得意。<b>見栄えのする1枚もの資料もそのまま出力できる</b>ので、PowerPointを開く回数が減ります。</div>
+          <div class="d">資料の文章・構成・議事録の要約・メール文・企画のたたき。長い資料を読ませて要約・再構成させるのが最も得意です。<b>そのまま見せられる1枚もの資料も出力できる</b>ので、PowerPointを開く回数が減ります。</div>
           <div class="meta"><span class="tag">提案書・報告書</span><span class="tag">議事録要約</span><span class="tag">メール・文章</span></div>
         </div></div>
 
       <div class="lv"><div class="lvnum"><div class="circ g">2</div><div class="rail"></div></div>
         <div class="lvbody"><span class="price">＋約3,000円/月</span><div class="t">ChatGPT Plus（画像が必要になったら）</div>
-          <div class="d">資料に入れるイラスト・図版・イメージ写真の生成。<b>画像生成だけはChatGPTが上</b>です。逆に文章・構成はClaudeのほうが安定します。<br>※ 弊社も「文章＝Claude／画像＝ChatGPT」で使い分けています。</div>
+          <div class="d">資料に入れるイラスト・図版・イメージ写真をつくれます。<b>画像を作る力だけはChatGPTが上</b>です。逆に文章・構成はClaudeのほうが安定します。<br>※ 弊社も「文章＝Claude／画像＝ChatGPT」で使い分けています。</div>
           <div class="meta"><span class="tag">挿絵・イメージ画像</span><span class="tag">図版素材</span></div>
         </div></div>
 
       <div class="lv"><div class="lvnum"><div class="circ s">3</div><div class="rail"></div></div>
         <div class="lvbody opt"><span class="price">0〜1,500円/月</span><div class="t">Gamma / Canva（任意・後回しでOK）</div>
-          <div class="d">「どうしてもPowerPoint形式のスライドで欲しい」場合だけ。Claudeで作った構成を貼るとスライド化してくれます。<b>最初は不要</b>。無料枠で試して、必要性を感じたら課金で十分です。</div>
+          <div class="d">「どうしてもPowerPoint形式のスライドで欲しい」場合だけ。Claudeで作った構成を貼るとスライドの形にしてくれます。<b>最初は不要</b>です。無料の範囲で試して、必要性を感じたら課金で十分です。</div>
           <div class="meta"><span class="tag">スライド化</span><span class="tag">デザイン調整</span></div>
         </div></div>
     </div>
@@ -138,15 +239,15 @@
 
   <!-- 比較表 -->
   <div class="card">
-    <h2>主要ツールの比較（資料作成という用途で）</h2>
+    <h2>主要ツールの比較 <span class="sm">─ 資料作成という用途で</span></h2>
     <table class="cmp">
       <tr><th></th><th class="win">Claude</th><th>ChatGPT</th><th>Gemini</th></tr>
       <tr><td>月額の目安</td><td class="win">約3,000円台</td><td>約3,000円台</td><td>約2,900円</td></tr>
       <tr><td>長い資料の要約・再構成</td><td class="win"><span class="ok">◎ 最も安定</span></td><td class="mid">○</td><td class="mid">○</td></tr>
       <tr><td>文章のトーン・言い回し</td><td class="win"><span class="ok">◎ 崩れにくい</span></td><td class="mid">○ やや大げさ寄り</td><td class="mid">○</td></tr>
       <tr><td>そのまま見せられる資料の出力</td><td class="win"><span class="ok">◎ 1枚もの資料を直接生成</span></td><td class="mid">○</td><td class="mid">△</td></tr>
-      <tr><td>画像・イラスト生成</td><td><span class="ng">✕ 不可</span></td><td class="win"><span class="ok">◎ ここだけ強い</span></td><td class="mid">○</td></tr>
-      <tr><td>自社資料を覚えさせる機能</td><td class="win"><span class="ok">◎ Projects</span></td><td class="mid">○ GPTs</td><td class="mid">△</td></tr>
+      <tr><td>画像・イラストをつくる</td><td><span class="ng">✕ できない</span></td><td class="win"><span class="ok">◎ ここだけ強い</span></td><td class="mid">○</td></tr>
+      <tr><td>自社資料を覚えさせる機能</td><td class="win"><span class="ok">◎ あり（プロジェクト）</span></td><td class="mid">○ あり</td><td class="mid">△</td></tr>
       <tr><td>Google（Gmail/ドライブ）連携</td><td class="mid">○</td><td class="mid">○</td><td class="win"><span class="ok">◎</span></td></tr>
     </table>
     <p class="foot">※ 料金は 2026年8月時点の目安（為替・プラン改定で変動します）。<b>Googleドライブ中心の業務であればGeminiも選択肢</b>ですが、資料の完成度で選ぶならClaudeです。</p>
@@ -154,7 +255,7 @@
 
   <!-- 使い方フロー -->
   <div class="card">
-    <h2>実際の使い方（資料1本つくる流れ）</h2>
+    <h2>慣れてきたら ─ 資料1本つくる流れ</h2>
     <div class="flow">
       <div class="fbox"><b>①材料を放る</b><br>議事録・メモ・<br>過去資料をそのまま</div>
       <span class="arrow">→</span>
@@ -171,8 +272,8 @@
     <div class="tip">
       <h3>コスパを最大化する3つのコツ</h3>
       <ol>
-        <li><b>Projects に会社の資料を入れておく</b> ─ 会社案内・過去の提案書・料金表・議事録を放り込んでおくと、毎回説明せずに「うちの文脈」で書いてくれます。<b>ここをやるかどうかが一番大きい差</b>です。</li>
-        <li><b>うまくいったやり取りは保存して使い回す</b> ─ 良い資料が出たときの指示文を残しておき、次回はそれを土台にする。回数を重ねるほど速くなります。</li>
+        <li><b>「プロジェクト」に会社の資料を入れておく</b> ─ Claudeの中にフォルダのような機能があります。会社案内・過去の提案書・料金表を入れておくと、毎回説明せずに「御社の文脈」で書いてくれます。<b>ここをやるかどうかが一番大きい差</b>です（研修でお手伝いできます）。</li>
+        <li><b>うまくいった頼み方は保存して使い回す</b> ─ 良い資料が出たときの指示文をメモに残し、次回はそれを土台にする。回数を重ねるほど速くなります。</li>
         <li><b>白紙から書かせず、たたきを直させる</b> ─ ゼロから完璧を狙うより、7割の下書きを出させて会話で削るほうが速く、質も上がります。</li>
       </ol>
     </div>
@@ -182,11 +283,22 @@
   <div class="card dont">
     <h2>先に知っておいていただきたい注意点</h2>
     <ul>
-      <li><b>いきなり3つ契約しない。</b>「全部入れたが結局1つしか使っていない」が一番多い失敗です。まずClaude 1本を1ヶ月。</li>
-      <li><b>数字・固有名詞は必ず人が確認する。</b>AIは体裁を整えるのは得意ですが、金額・日付・社名はもっともらしく間違えます。<b>最後の確認だけは人の仕事</b>として残してください。</li>
-      <li><b>会員情報などの個人情報は入力しない。</b>氏名・メール・住所を含むデータはそのまま貼らず、数字だけにするか匿名化してからお使いください。</li>
+      <li><b>いきなり複数契約しない。</b>「全部入れたが結局1つしか使っていない」が一番多い失敗です。まずClaude 1本を1ヶ月。</li>
+      <li><b>数字・固有名詞は必ずご自身で確認する。</b>AIは体裁を整えるのは得意ですが、金額・日付・社名はもっともらしく間違えます。<b>最後の確認だけは人の仕事</b>として残してください。</li>
+      <li><b>会員様の個人情報は入力しない。</b>氏名・メール・住所を含むデータはそのまま貼らず、数字だけにするか匿名化してからお使いください。</li>
       <li><b>無料版で判断しない。</b>無料版は性能が抑えられており、「思ったほどでもない」という誤った印象になります。判断は有料版1ヶ月で。</li>
     </ul>
+  </div>
+
+  <!-- 用語 -->
+  <div class="card">
+    <h2>この資料に出てくる言葉 <span class="sm">─ 念のため</span></h2>
+    <dl class="word">
+      <dt>Claude（クロード）</dt><dd>AIサービスの名前。ChatGPTの同業と考えていただければ十分です。文章・資料づくりが得意です。</dd>
+      <dt>Claude Code（クロードコード）</dt><dd>同じ会社が出している<b>もう一段強力な道具</b>。日本語で頼むとファイルそのものを作ってくれます。弊社が御社にお出ししている図解資料もこれで作っています。SNSで「無料で使える」と言われているのもこちらで、<b>導入手順書</b>をご用意しました。</dd>
+      <dt>プロジェクト</dt><dd>Claudeの中の「フォルダ」のような機能。会社の資料を入れておくと、毎回説明しなくても分かってくれます。</dd>
+      <dt>GitHub（ギットハブ）</dt><dd>作ったファイルを保管して、URLで人に見せられるようにする倉庫のようなサービス。<b>無料</b>です。このページもここに置いています。上の手順書のSTEP 1で登録します。</dd>
+    </dl>
   </div>
 
   <!-- まとめ -->
@@ -203,7 +315,7 @@
         <div class="amt" style="font-size:16px">＋0〜1,500円</div>
         <div class="note">Gamma / Canva でスライド化。ただし多くの場合は不要です</div></div>
     </div>
-    <p class="foot" style="margin-top:14px">使い方で詰まった箇所は、内製化研修の中でそのまま扱えます。<b>「この資料をつくりたい」を持ってきていただければ、その場で一緒に回して型にします。</b></p>
+    <p class="foot" style="margin-top:14px">登録でつまずいた場合や「この資料をつくりたい」というものがあれば、お気軽にお声がけください。<b>画面を一緒に見ながら、その場で1本つくるところまでお手伝いします。</b></p>
   </div>
 
   <p class="foot"><a href="./index.html" style="color:var(--blue)">← 内製化ご提案（全体像）に戻る</a></p>
