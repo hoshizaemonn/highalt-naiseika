@@ -214,7 +214,13 @@ npm install -g @musistudio/claude-code-router</pre>
       ※ 無料のAIを借りるための窓口です。<b>クレジットカード登録は不要</b>です。</div>
       <ol>
         <li>ブラウザで <code>openrouter.ai</code> を開く</li>
-        <li>右上の <b>「Sign in」</b> → <b>「Continue with GitHub」</b>（STEP 1で作ったアカウントでログインできます）</li>
+        <li>右上の <b>「Sign in」</b> をクリック</li>
+        <li>出てきた窓の<b>上部に、アイコンが3つ横並び</b>で出ます。<b>一番左（黒い猫のようなマーク＝GitHub）</b>をクリック
+          <ul>
+            <li>左＝<b>GitHub（これを押します）</b>／中央＝Google（4色のG）／右＝MetaMask（オレンジのキツネ・使いません）</li>
+            <li><b>「Continue with GitHub」という文字のボタンはありません。アイコンだけです</b></li>
+            <li>STEP 1で作ったGitHubアカウントでログインでき、OpenRouterのアカウントも同時に作られます</li>
+          </ul></li>
         <li>ログイン後、右上のアイコン → <b>「Keys」</b> をクリック</li>
         <li><b>「Create Key」</b> をクリック → 名前は <code>claude-code</code> など何でも構いません → 作成</li>
         <li><b>表示された文字列をコピーして、メモ帳などに貼って保存</b>
@@ -222,6 +228,7 @@ npm install -g @musistudio/claude-code-router</pre>
               <li>この鍵は<b>パスワードと同じ</b>です。人に見せない・チャットに貼らないでください</li></ul></li>
       </ol>
       <div class="chk"><b>✔ 確認：</b>メモ帳に <code>sk-or-v1-xxxxxxxx...</code> という長い文字列が保存されていればOKです。</div>
+      <div class="warnbox"><b>「Invalid credentials」と赤字で出た場合：</b>メールアドレスを入力して Continue を押すと、この表示になります。<b>まだOpenRouterのアカウントが無いためで、故障ではありません。</b>メール欄は使わず、<b>窓の上部にある一番左のGitHubアイコン</b>を押してください。それだけで登録とログインが同時に完了します。</div>
     </div>
   </div>
 
