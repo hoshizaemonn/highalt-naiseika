@@ -131,10 +131,11 @@
       <div class="os w"><div class="oh">Windows の場合</div><div class="ob">
         <ol style="margin-left:18px">
           <li>画面下のタスクバーの <b>🔍 検索</b> ボックスをクリック<br>（無ければ <code>Windowsキー</code> を押す）</li>
-          <li><b>powershell</b> と入力（半角英字）</li>
-          <li>出てきた <b>「Windows PowerShell」</b> をクリック</li>
+          <li><b>cmd</b> と入力（半角英字3文字）</li>
+          <li>出てきた <b>「コマンド プロンプト」</b> をクリック</li>
         </ol>
-        <p style="font-size:13px;margin-top:8px"><b>濃い青か黒の画面</b>が開けば成功です。<code>PS C:\Users\...&gt;</code> の右でカーソルが点滅しているので、そこに文字を打ちます。</p>
+        <p style="font-size:13px;margin-top:8px"><b>黒い画面</b>が開けば成功です。<code>C:\Users\...&gt;</code> の右でカーソルが点滅しているので、そこに文字を打ちます。</p>
+        <div class="warnbox" style="margin-top:8px"><b>「PowerShell」ではなく「コマンド プロンプト」を使ってください。</b>PowerShellだと、Windowsの安全装置に弾かれて<code>スクリプトの実行が無効になっているため…</code>という赤いエラーが出ます（STEP 2の管理者操作だけは例外でPowerShellを使います）。</div>
       </div></div>
       <div class="os m"><div class="oh">Mac の場合</div><div class="ob">
         <ol style="margin-left:18px">
@@ -351,6 +352,7 @@ ccr default</pre>
     <h2>つまずいた時 <span class="sm">─ よくある症状と対処</span></h2>
     <table>
       <tr><th>症状</th><th>原因と対処</th></tr>
+      <tr><td>赤字で<code>スクリプトの実行が無効になっているため</code><br><code>UnauthorizedAccess</code></td><td><b>Windowsの安全装置です。故障でも、インストール失敗でもありません。</b><b>PowerShellを閉じて、「コマンド プロンプト」（検索に <code>cmd</code>）で開き直し</b>、同じコマンドを打てば通ります。どうしてもPowerShellで進めたい場合は、コマンドの後ろに <code>.cmd</code> を足して <code>ccr.cmd ui</code> と打ってください。</td></tr>
       <tr><td>「黒い画面」が分からない</td><td><a href="#terminal" style="color:var(--blue);font-weight:700">▶ 黒い画面の開き方はこちら</a> をご覧ください。Windowsは検索ボックスに <code>powershell</code>、Macは <code>command</code>+<code>スペース</code>で <code>ターミナル</code>。<b>何度閉じても、同じ手順で開き直せます。</b></td></tr>
       <tr><td><code>command not found</code><br><code>認識されていません</code></td><td>道具が入っていないか、画面を開き直していません。<b>黒い画面を一度閉じて開き直す</b>と直ることがほとんどです。</td></tr>
       <tr><td><code>node -v</code> の数字が20以下</td><td>Node.jsが古いです。Windows: <code>winget upgrade OpenJS.NodeJS.LTS</code> ／ Mac: <code>brew upgrade node</code></td></tr>
