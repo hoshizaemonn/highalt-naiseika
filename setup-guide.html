@@ -119,7 +119,7 @@
       <div class="pt"><div class="pn">STEP 4</div><h3>OpenRouter</h3><p>AIの「頭脳」を無料で借りる先。カード登録なしで使えます。</p></div>
     </div>
     <div class="notebox" style="margin-top:14px">
-      <b>この手順の位置づけ：</b>本来 Claude Code は Claude（月3,000円台）を頭脳として動かす道具です。この手順書では費用0円を優先し、<b>頭脳の部分だけ無料のAI（DeepSeek等）に差し替えて</b>使います。そのため<b>答えの質はClaude本体より落ちます</b>。まず0円で体験し、物足りなければSTEP 7で正規版に切り替える、という流れをおすすめします。
+      <b>この手順の位置づけ：</b>本来 Claude Code は Claude（月3,000円台）を頭脳として動かす道具です。この手順書では費用0円を優先し、<b>頭脳の部分だけ無料のAI（NVIDIA Nemotron等）に差し替えて</b>使います。そのため<b>答えの質はClaude本体より落ちます</b>。まず0円で体験し、物足りなければSTEP 7で正規版に切り替える、という流れをおすすめします。
     </div>
   </div>
 
@@ -266,15 +266,20 @@ npm install -g @musistudio/claude-code-router</pre>
       <div class="goal"><b>ゴール：</b>ブラウザの設定画面で、STEP 4の鍵を登録して接続が完了する。<br>ここは<b>マウス操作の画面</b>なので、黒い画面より簡単です。</div>
       <b style="font-size:14px">① 設定画面を開く</b><p style="font-size:13.5px;margin:6px 0"><a href="#terminal" style="color:var(--blue);font-weight:700">▶ 黒い画面の開き方はこちら</a>　で黒い画面を開き、下記を打ち込んで Enter。<br><span style="color:var(--sub)">※ STEP 2で開いた画面を閉じてしまっていても大丈夫です。開き直してください。</span></p>
       <pre>ccr ui</pre>
-      <p style="font-size:13.5px;margin-top:6px">ブラウザが自動で開きます（開かない場合は <code>http://127.0.0.1:3458</code> を手で開いてください）。</p>
+      <p style="font-size:13.5px;margin-top:6px">ブラウザが自動で開きます（開かない場合は <code>http://127.0.0.1:3458</code> を手で開いてください）。</p><div class="warnbox"><b>この黒い画面は、作業が終わるまで閉じないでください。</b>× で閉じたり <code>Ctrl</code>+<code>C</code> を押すと接続が切れ、<code>サービス開始に失敗しました／コアゲートウェイは3221225786で終了しました</code> というエラーになります。<b>最小化はしても大丈夫です。</b>閉じてしまった場合は、もう一度 <code>ccr ui</code> から実行してください。</div>
 
       <b style="font-size:14px;display:block;margin-top:14px">② AIの提供元を登録する</b>
       <ol>
         <li>左メニューの <b>Providers</b> → <b>Add Provider</b></li>
         <li><b>OpenRouter</b> を選ぶ</li>
         <li><b>API Key</b> の欄に、STEP 4でコピーした鍵を貼り付け</li>
-        <li>モデル一覧から、名前の<b>末尾が <code>:free</code> のもの</b>を選ぶ（これが無料の目印です）
-          <ul><li>例：<code>deepseek/deepseek-chat-v3:free</code> など。一覧は時期によって入れ替わります</li></ul></li>
+        <li>モデルを追加する。<b>一覧が「0件／提供者モデルなし」でも正常です</b>。右側の <b>「＋ カスタムモデル」</b> をクリックし、下記をそのまま貼り付けてください
+          <div style="background:#0f2740;color:#e8f1fa;font-family:Menlo,Consolas,monospace;font-size:12.5px;border-radius:8px;padding:10px 12px;margin:8px 0">nvidia/nemotron-3-ultra-550b-a55b:free</div>
+          <ul>
+            <li>追加したら、中央の <b>「&gt;」ボタン</b>で右側の「追加モデル」へ移します</li>
+            <li>うまくいかない時の予備：<code>cohere/north-mini-code:free</code> ／ <code>openai/gpt-oss-20b:free</code></li>
+            <li><b>末尾の <code>:free</code> が無料の目印</b>です。これが付いていないものを選ぶと課金されます</li>
+          </ul></li>
         <li>保存</li>
       </ol>
 
@@ -282,7 +287,7 @@ npm install -g @musistudio/claude-code-router</pre>
       <ol>
         <li><b>Agent Config</b> を開く</li>
         <li>エージェント一覧から <b>Claude Code</b> を選ぶ</li>
-        <li>②で登録したモデルを選んで <b>適用（Apply）</b></li>
+        <li><b>デフォルトモデル</b>に、②で追加したモデルを選んで <b>適用（Apply）</b><ul><li>OPUS／ソネット／俳句モデルなどの欄は<b>「Claude Codeはデフォルトに保つ」のままでOK</b>です</li><li>赤字で<code>デフォルトモデルが必要です</code>と出る時は、この欄が未選択です</li></ul></li>
         <li>この<b>プロファイル名をメモ</b>してください（次のSTEPで使います）</li>
         <li><b>Server</b> を開いて <b>Start</b> をクリック</li>
       </ol>
@@ -352,6 +357,8 @@ ccr default</pre>
     <h2>つまずいた時 <span class="sm">─ よくある症状と対処</span></h2>
     <table>
       <tr><th>症状</th><th>原因と対処</th></tr>
+      <tr><td><code>サービス開始に失敗しました</code><br><code>コアゲートウェイは3221225786で終了</code></td><td><b><code>ccr ui</code> を実行した黒い画面を閉じた（またはCtrl+Cを押した）</b>ことが原因です。黒い画面を開き直して <code>ccr ui</code> を実行し、<b>そのまま閉じずに</b>ブラウザ側の操作を続けてください。</td></tr>
+      <tr><td><code>利用可能なモデルはありません</code><br>モデル一覧が0件</td><td><b>正常な表示です。</b>「＋ カスタムモデル」から <code>nvidia/nemotron-3-ultra-550b-a55b:free</code> を手入力し、「&gt;」ボタンで右側へ移してください。<b>無料モデルの顔ぶれは頻繁に入れ替わります</b>ので、このモデルが消えていたら <code>openrouter.ai/models</code> で末尾が <code>:free</code> のものを探してください。</td></tr>
       <tr><td>赤字で<code>スクリプトの実行が無効になっているため</code><br><code>UnauthorizedAccess</code></td><td><b>Windowsの安全装置です。故障でも、インストール失敗でもありません。</b><b>PowerShellを閉じて、「コマンド プロンプト」（検索に <code>cmd</code>）で開き直し</b>、同じコマンドを打てば通ります。どうしてもPowerShellで進めたい場合は、コマンドの後ろに <code>.cmd</code> を足して <code>ccr.cmd ui</code> と打ってください。</td></tr>
       <tr><td>「黒い画面」が分からない</td><td><a href="#terminal" style="color:var(--blue);font-weight:700">▶ 黒い画面の開き方はこちら</a> をご覧ください。Windowsは検索ボックスに <code>powershell</code>、Macは <code>command</code>+<code>スペース</code>で <code>ターミナル</code>。<b>何度閉じても、同じ手順で開き直せます。</b></td></tr>
       <tr><td><code>command not found</code><br><code>認識されていません</code></td><td>道具が入っていないか、画面を開き直していません。<b>黒い画面を一度閉じて開き直す</b>と直ることがほとんどです。</td></tr>
